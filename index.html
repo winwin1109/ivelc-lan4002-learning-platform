@@ -116,7 +116,7 @@
 
         .back-btn {
             padding: 10px 25px; background: #b2bec3; color: white; border: none;
-            border-radius: 50px; cursor: pointer; font-weight: bold; margin-bottom: 20px; transition: 0.3s;
+            border-radius: 50px; cursor: pointer; font-weight: bold; margin-bottom: 20px; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px;
         }
         .back-btn:hover { background: #636e72; transform: translateX(-5px); }
 
@@ -141,28 +141,25 @@
         .intro-list li { margin-bottom: 10px; position: relative; }
         .intro-list li::before { content: "▶"; position: absolute; left: -25px; color: #f1c40f; font-size: 1.2rem; }
 
-        /* 流程圖樣式 */
         .flowchart { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; margin-top: 20px; padding-left: 20px; }
         .flow-node { padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .flow-arrow { color: #aaa; font-size: 1.2rem; }
 
-        /* --- 5. 互動學習資源 (書本櫃) - 更新油漆邊緣與漸變背景 --- */
+        /* --- 5. 互動學習資源 (書本櫃) --- */
         .lessons-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; padding: 20px 0; }
         .lesson-book {
-            width: 190px; height: 300px; background: white; /* 預設背景，會被繼承的漸變覆蓋 */
+            width: 190px; height: 300px; background: white; 
             border-radius: 5px 15px 15px 5px;
             box-shadow: 5px 8px 15px rgba(0,0,0,0.1);
             padding: 20px 15px; display: flex; flex-direction: column;
             cursor: pointer; transition: 0.3s; position: relative;
-            z-index: 1; /* 確保內容在背景之上 */
+            z-index: 1; 
         }
         .lesson-book:hover { transform: translateY(-10px); box-shadow: 10px 15px 25px rgba(0,0,0,0.15); }
         
-        /* 更新：小圖片套用油漆邊緣 */
         .lb-cover-img {
             width: 100%; height: 130px; object-fit: cover;
             margin-bottom: 15px;
-            /* 去除圓角和實線邊框，改用油漆濾鏡 */
             filter: url(#paint-edge) drop-shadow(2px 3px 4px rgba(0,0,0,0.1));
             border: none;
             border-radius: 0;
@@ -171,16 +168,49 @@
         .lb-title { font-size: 1.15rem; font-weight: 900; color: #2c3e50; line-height: 1.4; }
 
         /* 每課專屬清新漸變背景樣式 */
-        .lb-grade-1 { background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%); } /* 水藍 */
-        .lb-grade-2 { background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%); } /* 粉綠 */
-        .lb-grade-3 { background: linear-gradient(135deg, #fffde7 0%, #ffffff 100%); } /* 淡黃 */
-        .lb-grade-4 { background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); } /* 橘粉 */
-        .lb-grade-5 { background: linear-gradient(135deg, #fce4ec 0%, #ffffff 100%); } /* 粉紅 */
-        .lb-grade-6 { background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%); } /* 淡紫 */
-        .lb-grade-7 { background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%); } /* 天藍 */
-        .lb-grade-8 { background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%); } /* 碧綠 */
-        .lb-grade-9 { background: linear-gradient(135deg, #f9fbe7 0%, #ffffff 100%); } /* 青檸 */
-        .lb-grade-10 { background: linear-gradient(135deg, #efebe9 0%, #ffffff 100%); } /* 淺駝 */
+        .lb-grade-1 { background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%); } 
+        .lb-grade-2 { background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%); } 
+        .lb-grade-3 { background: linear-gradient(135deg, #fffde7 0%, #ffffff 100%); } 
+        .lb-grade-4 { background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); } 
+        .lb-grade-5 { background: linear-gradient(135deg, #fce4ec 0%, #ffffff 100%); } 
+        .lb-grade-6 { background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%); } 
+        .lb-grade-7 { background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%); } 
+        .lb-grade-8 { background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%); } 
+        .lb-grade-9 { background: linear-gradient(135deg, #f9fbe7 0%, #ffffff 100%); } 
+        .lb-grade-10 { background: linear-gradient(135deg, #efebe9 0%, #ffffff 100%); } 
+
+        /* --- 6. 彈跳視窗 Modal 設計 --- */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: white; width: 90%; max-width: 550px; border-radius: var(--border-radius-lg);
+            padding: 40px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            max-height: 85vh; overflow-y: auto;
+            animation: appModalSpawn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+        }
+        @keyframes appModalSpawn {
+            from { transform: translateY(50px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .close-btn {
+            position: absolute; top: 15px; right: 25px; font-size: 35px; cursor: pointer;
+            color: #b2bec3; transition: 0.3s;
+        }
+        .close-btn:hover { color: #ff6b6b; transform: rotate(90deg); }
+        .modal-header {
+            font-size: 2rem; margin-bottom: 20px; font-weight: 900; padding-bottom: 15px;
+            border-bottom: 4px solid #f1f3f5; text-align: center;
+        }
+        
+        .copy-link-btn {
+            background-color: white; border: 2px solid #ddd; border-radius: 50px; padding: 10px 25px;
+            font-size: 1rem; font-weight: bold; color: var(--text-sub); cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%; max-width: 250px;
+        }
+        .copy-link-btn:hover { background-color: #f8f9fa; border-color: #ccc; color: var(--text-main); }
 
         @media (max-width: 850px) { 
             .toc-grid { grid-template-columns: 1fr; } 
@@ -437,7 +467,7 @@
                         <div class="lb-num">第一課</div>
                         <div class="lb-title">單元概覽</div>
                     </div>
-                    <div class="lesson-book lb-grade-2" style="border-left-color: #e4c1d9;" onclick="alert('進入：第二課 商業新聞稿')">
+                    <div class="lesson-book lb-grade-2" style="border-left-color: #e4c1d9;" onclick="showView('lesson-detail-view-2')">
                         <img src="P3.jpg" alt="第二課" class="lb-cover-img">
                         <div class="lb-num">第二課</div>
                         <div class="lb-title">商業新聞稿</div>
@@ -461,6 +491,42 @@
                         <img src="P7.jpg" alt="第六課" class="lb-cover-img">
                         <div class="lb-num">第六課</div>
                         <div class="lb-title">單元小結</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="lesson-detail-view-2" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
+                
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #e4c1d9;">
+                        <h2 style="color: #444;">第二課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #fdf0f6;">
+                        <h1>商業新聞稿</h1>
+                    </div>
+                </div>
+
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #e4c1d9; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #e4c1d9;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>認識商業新聞稿的內容與結構</li>
+                        <li>掌握商業新聞稿的寫作策略</li>
+                        <li>運用適當的策略，撰寫商業新聞稿</li>
+                    </ol>
+                </div>
+
+                <h3 style="text-align: center; color: #2d3436; font-size: 1.8rem; margin-bottom: 30px; border-bottom: 2px dashed #eee; padding-bottom: 15px;">本課互動教學活動</h3>
+                
+                <div class="chest-container">
+                    <div class="chest-item" style="border-top-color: #9070a1;" onclick="openGameModal()">
+                        <span class="chest-icon"><i class="fa-solid fa-chess-knight" style="color: #9070a1;"></i></span>
+                        <div class="chest-title" style="color: #9070a1; font-size: 1.3rem;">1-認識商業新聞稿</div>
                     </div>
                 </div>
             </div>
@@ -498,11 +564,82 @@
 
     </main>
 
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeGameModal()">&times;</span>
+            <div class="modal-header" style="background: var(--accent-4002-gradient); -webkit-background-clip: text; color: transparent;">
+                1-認識商業新聞稿
+            </div>
+            
+            <div class="modal-body">
+                <h3 style="color: #9070a1; font-size: 1.3rem; margin-top: 10px;">學習內容：</h3>
+                <ul style="list-style: none; padding: 20px; line-height: 2; font-size: 1.15rem; color: #444; background: #fdf0f6; border-radius: 12px; border: 1px solid #f4d9e7; margin-bottom: 30px;">
+                    <li><i class="fa-solid fa-pen" style="color: #9070a1; margin-right: 10px;"></i> 新聞與商業新聞稿的比較</li>
+                    <li><i class="fa-solid fa-pen" style="color: #9070a1; margin-right: 10px;"></i> 寫作目的</li>
+                    <li><i class="fa-solid fa-pen" style="color: #9070a1; margin-right: 10px;"></i> 發布途徑與特點</li>
+                </ul>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding-top: 20px; border-top: 2px dashed #eee;">
+                    
+                    <a href="https://winwin1109.github.io/press-release-1/" target="_blank" class="enter-btn" style="margin: 0; background: var(--accent-4002-gradient);">👉 進入活動</a>
+                    
+                    <div style="text-align: center; margin-top: 10px;">
+                        <img src="Q1.jpg" alt="活動 QR Code" style="max-width: 180px; border: 4px solid #f1f3f5; padding: 8px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                    </div>
+                    
+                    <button class="copy-link-btn" onclick="copyGameLink('https://winwin1109.github.io/press-release-1/', this)">
+                        <i class="fa-regular fa-copy"></i> 複製連結
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // 視圖切換
         function showView(viewId) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
             window.scrollTo(0, 0);
+        }
+
+        // 打開遊戲彈跳視窗
+        function openGameModal() {
+            document.getElementById('gameModal').style.display = 'flex';
+        }
+
+        // 關閉遊戲彈跳視窗
+        function closeGameModal() {
+            document.getElementById('gameModal').style.display = 'none';
+        }
+
+        // 點擊 Modal 外部時關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('gameModal');
+            if (event.target == modal) {
+                closeGameModal();
+            }
+        }
+
+        // 複製連結功能
+        function copyGameLink(url, btn) {
+            navigator.clipboard.writeText(url).then(() => {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '✅ 已複製！可傳給學生';
+                btn.style.backgroundColor = '#d4edda';
+                btn.style.borderColor = '#c3e6cb';
+                btn.style.color = '#155724';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.backgroundColor = 'white';
+                    btn.style.borderColor = '#ddd';
+                    btn.style.color = 'var(--text-sub)';
+                }, 2000);
+            }).catch(err => {
+                alert('複製失敗，請手動複製連結。');
+            });
         }
     </script>
 </body>
