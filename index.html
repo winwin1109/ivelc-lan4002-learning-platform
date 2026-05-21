@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職業中文傳意—電子教學平台 (LAN4002)</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1G1KSXH8DB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-1G1KSXH8DB');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+            --accent-4002-start: #9b59b6;
+            --accent-4002-end: #ec407a;
+            --accent-4002-gradient: linear-gradient(135deg, var(--accent-4002-start) 0%, var(--accent-4002-end) 100%);
+            --bg-color: #f0f4f8; 
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --border-radius-lg: 30px;
+            --border-radius-md: 15px;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(155, 89, 182, 0.1) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(236, 64, 122, 0.1) 0px, transparent 50%);
+            margin: 0; padding: 20px; color: var(--text-main); min-height: 100vh;
+        }
+
+        header {
+            text-align: center; margin-bottom: 40px; padding: 30px 20px;
+            background: var(--primary-gradient); color: white;
+            border-radius: var(--border-radius-lg); box-shadow: 0 10px 25px rgba(44, 62, 80, 0.2);
+        }
+
+        /* 視圖控制 */
+        .view-section { display: none; animation: fadeIn 0.5s ease forwards; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 1. 封面設計 --- */
+        .library-container { display: flex; justify-content: center; padding: 40px; }
+        .course-book {
+            width: 360px; min-height: 540px; background: white;
+            border-radius: 5px 25px 25px 5px;
+            box-shadow: 15px 15px 35px rgba(0,0,0,0.2);
+            cursor: pointer; transition: 0.4s;
+            border-left: 25px solid var(--accent-4002-start);
+            display: flex; flex-direction: column; padding: 40px 30px;
+            position: relative; box-sizing: border-box;
+        }
+        .course-book:hover { transform: translateY(-15px) rotateY(-5deg); box-shadow: 25px 30px 50px rgba(0,0,0,0.3); }
+        .book-title { font-size: 2rem; font-weight: 900; line-height: 1.3; color: #444; }
+        
+        .book-cover-img-container {
+            width: 100%; height: 250px; margin: 20px 0;
+            filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.2)); 
+        }
+        .book-cover-img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: url(#paint-edge); 
+        }
+
+        .book-main-topic { 
+            margin-top: auto; font-size: 1.9rem; font-weight: 900; line-height: 1.2;
+            background: var(--accent-4002-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .book-footer { margin-top: 20px; display: flex; flex-direction: column; align-items: flex-end; width: 100%; }
+        .book-code-dark { font-size: 1.2rem; color: #2d3436; font-weight: bold; margin: 0; }
+        .book-icons { display: flex; gap: 10px; margin-top: 8px; color: #636e72; font-size: 1rem; }
+
+        /* --- 2. 專業目錄設計 --- */
+        .toc-container, .content-container {
+            max-width: 950px; margin: 0 auto; background: white;
+            padding: 50px; border-radius: var(--border-radius-lg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+        .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
+        .toc-unit { background: #f8f9fa; padding: 25px; border-radius: 20px; border-top: 6px solid var(--accent-4002-start); }
+        .toc-unit h2 { color: var(--accent-4002-start); font-size: 1.2rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; text-align: left; line-height: 1.4;}
+        .toc-lesson { margin-bottom: 15px; }
+        .toc-lesson-title { font-weight: bold; color: #2d3436; font-size: 1.1rem; display: block; margin-bottom: 5px; }
+        .toc-sub { font-size: 0.9rem; color: #636e72; list-style: none; padding-left: 15px; margin: 0; }
+        .toc-sub li { margin-bottom: 3px; position: relative; }
+        .toc-sub li::before { content: "•"; color: var(--accent-4002-end); position: absolute; left: -12px; }
+
+        .enter-btn {
+            display: block; width: 280px; margin: 40px auto 0; padding: 15px;
+            background: var(--accent-4002-gradient); color: white; text-align: center;
+            text-decoration: none; border-radius: 50px; font-weight: 900; font-size: 1.2rem;
+            box-shadow: 0 8px 20px rgba(236, 64, 122, 0.3); transition: 0.3s; border: none; cursor: pointer;
+        }
+        .enter-btn:hover { transform: scale(1.05); box-shadow: 0 12px 25px rgba(236, 64, 122, 0.4); }
+
+        /* --- 3. 資源列表頁面 --- */
+        .shelf-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 3px solid #f1f3f5; padding-bottom: 15px; }
+        .chest-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; }
+        .chest-item {
+            width: 260px; padding: 30px 20px; background: #fff; border-radius: 15px;
+            border: 2px solid #f1f3f5; text-align: center; cursor: pointer; transition: 0.3s;
+            border-top: 6px solid var(--accent-4002-start); box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        }
+        .chest-item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--accent-4002-end); }
+        .chest-icon { font-size: 70px; margin-bottom: 15px; display: block; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1)); }
+        .chest-title { font-weight: 900; font-size: 1.2rem; color: var(--accent-4002-start); }
+
+        .back-btn {
+            padding: 10px 25px; background: #b2bec3; color: white; border: none;
+            border-radius: 50px; cursor: pointer; font-weight: bold; margin-bottom: 20px; transition: 0.3s;
+        }
+        .back-btn:hover { background: #636e72; transform: translateX(-5px); }
+
+        /* --- 4. 單元介紹頁面 --- */
+        .intro-header-wrapper {
+            display: flex; border-radius: 15px; overflow: hidden; margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .intro-header-left { padding: 30px 40px; display: flex; align-items: center; justify-content: center; }
+        .intro-header-left h2 { color: white; border-top: 3px solid white; border-bottom: 3px solid white; padding: 10px 0; margin: 0; font-size: 2rem; letter-spacing: 2px; }
+        .intro-header-right { padding: 30px 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .intro-header-right h1 { margin: 0; font-size: 3rem; color: #111; letter-spacing: 2px;}
+        .intro-header-right p { margin: 5px 0 0; font-size: 1.2rem; color: #333; font-weight: bold; }
+        .intro-header-right .code { text-align: right; margin-top: 15px; font-size: 1rem; color: #555; }
+
+        .intro-section-block { margin-bottom: 40px; padding: 0 20px; }
+        .intro-heading { display: flex; align-items: center; margin-bottom: 15px; }
+        .intro-heading .large-num { font-size: 4rem; font-weight: 900; line-height: 1; margin-right: 15px; text-shadow: 3px 3px 6px rgba(0,0,0,0.1); }
+        .intro-heading h3 { font-size: 1.8rem; margin: 0; color: #444; }
+        
+        .intro-list { list-style: none; padding-left: 20px; line-height: 1.8; font-size: 1.1rem; color: #444; }
+        .intro-list li { margin-bottom: 10px; position: relative; }
+        .intro-list li::before { content: "▶"; position: absolute; left: -25px; color: #f1c40f; font-size: 1.2rem; }
+
+        /* 流程圖樣式 */
+        .flowchart { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; margin-top: 20px; padding-left: 20px; }
+        .flow-node { padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .flow-arrow { color: #aaa; font-size: 1.2rem; }
+
+        /* --- 5. 互動學習資源 (書本櫃) - 更新油漆邊緣與漸變背景 --- */
+        .lessons-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; padding: 20px 0; }
+        .lesson-book {
+            width: 190px; height: 300px; background: white; /* 預設背景，會被繼承的漸變覆蓋 */
+            border-radius: 5px 15px 15px 5px;
+            box-shadow: 5px 8px 15px rgba(0,0,0,0.1);
+            padding: 20px 15px; display: flex; flex-direction: column;
+            cursor: pointer; transition: 0.3s; position: relative;
+            z-index: 1; /* 確保內容在背景之上 */
+        }
+        .lesson-book:hover { transform: translateY(-10px); box-shadow: 10px 15px 25px rgba(0,0,0,0.15); }
+        
+        /* 更新：小圖片套用油漆邊緣 */
+        .lb-cover-img {
+            width: 100%; height: 130px; object-fit: cover;
+            margin-bottom: 15px;
+            /* 去除圓角和實線邊框，改用油漆濾鏡 */
+            filter: url(#paint-edge) drop-shadow(2px 3px 4px rgba(0,0,0,0.1));
+            border: none;
+            border-radius: 0;
+        }
+        .lb-num { font-size: 0.95rem; font-weight: bold; color: #7f8c8d; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; margin-bottom: 10px; }
+        .lb-title { font-size: 1.15rem; font-weight: 900; color: #2c3e50; line-height: 1.4; }
+
+        /* 每課專屬清新漸變背景樣式 */
+        .lb-grade-1 { background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%); } /* 水藍 */
+        .lb-grade-2 { background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%); } /* 粉綠 */
+        .lb-grade-3 { background: linear-gradient(135deg, #fffde7 0%, #ffffff 100%); } /* 淡黃 */
+        .lb-grade-4 { background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%); } /* 橘粉 */
+        .lb-grade-5 { background: linear-gradient(135deg, #fce4ec 0%, #ffffff 100%); } /* 粉紅 */
+        .lb-grade-6 { background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%); } /* 淡紫 */
+        .lb-grade-7 { background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%); } /* 天藍 */
+        .lb-grade-8 { background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%); } /* 碧綠 */
+        .lb-grade-9 { background: linear-gradient(135deg, #f9fbe7 0%, #ffffff 100%); } /* 青檸 */
+        .lb-grade-10 { background: linear-gradient(135deg, #efebe9 0%, #ffffff 100%); } /* 淺駝 */
+
+        @media (max-width: 850px) { 
+            .toc-grid { grid-template-columns: 1fr; } 
+            .intro-header-wrapper { flex-direction: column; }
+            .intro-header-left h2 { font-size: 1.5rem; }
+            .intro-header-right h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <svg width="0" height="0" style="position: absolute; z-index: -1;">
+        <filter id="paint-edge">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceAlpha" in2="noise" scale="25" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+            <feComposite in="SourceGraphic" in2="displaced" operator="in" />
+        </filter>
+    </svg>
+
+    <header>
+        <h1>職業中文傳意—電子教學平台</h1>
+    </header>
+
+    <main>
+        <section id="library-view" class="view-section active">
+            <div class="library-container">
+                <div class="course-book" onclick="showView('toc-view')">
+                    <div class="book-title">職業中文傳意</div>
+                    
+                    <div class="book-cover-img-container">
+                        <img src="P1.jpg" alt="職業中文推介文書封面圖" class="book-cover-img">
+                    </div>
+
+                    <div class="book-main-topic">普通話報告與<br>推介文書</div>
+                    
+                    <div class="book-footer">
+                        <p class="book-code-dark">LAN4002</p>
+                        <div class="book-icons">
+                            <i class="fa-solid fa-pen" title="寫作"></i>
+                            <i class="fa-solid fa-chart-bar" title="匯報"></i>
+                            <i class="fa-solid fa-comments" title="溝通"></i>
+                            <i class="fa-solid fa-bullhorn" title="推廣"></i>
+                            <i class="fa-solid fa-balance-scale" title="論證"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align:center; color:#636e72; font-weight: bold;">👉 點擊書本展開目錄</p>
+        </section>
+
+        <section id="toc-view" class="view-section">
+            <div class="toc-container">
+                <button class="back-btn" onclick="showView('library-view')">⬅ 返回書櫃</button>
+                <h1 style="text-align:center; color: #2d3436; border:none; margin-bottom: 10px;">電子書目錄</h1>
+                <p style="text-align:center; color: #888; font-weight:bold;">LAN4002 職業中文傳意</p>
+                
+                <div class="toc-grid">
+                    <div class="toc-unit">
+                        <h2>一、寫作單元<br><span style="font-size: 0.95em; color:#555;">能寫作各種專業宣傳推介文書</span></h2>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">單元介紹</span>
+                            <ul class="toc-sub"><li>學習目標</li><li>課程內容</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第一課 單元概覽</span>
+                            <ul class="toc-sub"><li>宣傳策略</li><li>建構宣傳內容</li><li>綜合練習</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第二課 商業新聞稿</span>
+                            <ul class="toc-sub"><li>新聞與商業新聞稿</li><li>預期學習成果</li><li>寫作策略</li><li>寫作步驟</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第三課 商業新聞稿個案研習</span>
+                            <ul class="toc-sub"><li>商業新聞稿</li><li>商業新聞稿寫作練習</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第四課 推廣信</span>
+                            <ul class="toc-sub"><li>推廣信的定義與特點</li><li>預期學習成果</li><li>寫作策略</li><li>寫作步驟</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第五課 推廣信個案研習</span>
+                            <ul class="toc-sub"><li>個案研習</li><li>推廣信寫作練習</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第六課 單元小結</span>
+                            <ul class="toc-sub"><li>強化訓練</li><li>評核錦囊</li><li>常用詞彙表</li></ul>
+                        </div>
+                    </div>
+
+                    <div class="toc-unit">
+                        <h2>二、匯報單元<br><span style="font-size: 0.95em; color:#555;">能進行各種專題報告(普通話)</span></h2>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">單元介紹</span>
+                            <ul class="toc-sub"><li>學習目標</li><li>課程內容</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第七課 單元概覽</span>
+                            <ul class="toc-sub"><li>語言功能介紹——說服</li><li>預期學習成果</li><li>搜集資料的方法：第一手資料</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第八課 論證技巧</span>
+                            <ul class="toc-sub"><li>論點</li><li>論據</li><li>論證方法</li><li>小組研習</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第九課 個案研習</span>
+                            <ul class="toc-sub"><li>說服</li><li>報告策略</li><li>小組研習報告</li></ul>
+                        </div>
+                        <div class="toc-lesson">
+                            <span class="toc-lesson-title">第十課 單元小結</span>
+                            <ul class="toc-sub"><li>評核錦囊</li><li>報告演練</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="enter-btn" onclick="showView('shelf-view')">進入互動教學資源 ➔</button>
+            </div>
+        </section>
+
+        <section id="shelf-view" class="view-section">
+            <div class="content-container">
+                <div class="shelf-header">
+                    <h2 style="font-size: 2rem; margin: 0; color: #2d3436;">互動教學資源</h2>
+                    <button class="back-btn" onclick="showView('toc-view')">⬅ 返回目錄</button>
+                </div>
+                
+                <div class="chest-container">
+                    <div class="chest-item" onclick="showView('intro-view-writing')">
+                        <span class="chest-icon">📝</span>
+                        <div class="chest-title">寫作單元：單元介紹</div>
+                    </div>
+                    <div class="chest-item" style="border-top-color:#8e44ad;" onclick="showView('intro-view-report')">
+                        <span class="chest-icon">🗣️</span>
+                        <div class="chest-title" style="color:#8e44ad;">匯報單元：單元介紹</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="intro-view-writing" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('shelf-view')">⬅ 返回單元選擇</button>
+                
+                <div class="intro-header-wrapper">
+                    <div class="intro-header-left" style="background: #9070a1;">
+                        <h2>單元介紹</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #fdf0f6;">
+                        <h1>寫作單元</h1>
+                        <p>能寫作各種專業宣傳推介文書</p>
+                        <p class="code">GCCH416A</p>
+                    </div>
+                </div>
+
+                <div class="intro-section-block">
+                    <div class="intro-heading">
+                        <span class="large-num" style="color: #9070a1;">1</span>
+                        <h3>學習目標</h3>
+                    </div>
+                    <p style="font-size: 1.1rem; color: #444;">GCCH416A 是資歷架構通用能力中的一個寫作能力單元（第四級），學生完成本單元後，能夠：</p>
+                    <ul class="intro-list">
+                        <li>針對寫作對象，靈活運用與調整寫作策略</li>
+                        <li>撰寫主旨明確、剪裁恰當、文理連貫的宣傳推介文書，達到推廣產品或活動的目的</li>
+                    </ul>
+                </div>
+
+                <div class="intro-section-block">
+                    <div class="intro-heading">
+                        <span class="large-num" style="color: #9070a1;">2</span>
+                        <h3>課程內容</h3>
+                    </div>
+                    <p style="font-size: 1.1rem; color: #444;">本單元通過以下課題幫助學生逐步達到預期學習成果：</p>
+                    
+                    <div class="flowchart">
+                        <div class="flow-node" style="background:#ceadc6; color:white;">單元概覽</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#e4c1d9; color:#444;">新聞稿</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#e4c1d9; color:#444;">新聞稿個案研習</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#f4d9e7; color:#444;">推廣信</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#f4d9e7; color:#444;">推廣信個案研習</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#a5c7df; color:#444;">單元小結</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#85b5d1; color:white;">單元檢測</div>
+                    </div>
+                </div>
+
+                <button class="enter-btn" style="background:#9070a1;" onclick="showView('lessons-view-writing')">開始學習 ➔</button>
+            </div>
+        </section>
+
+        <section id="intro-view-report" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('shelf-view')">⬅ 返回單元選擇</button>
+                
+                <div class="intro-header-wrapper">
+                    <div class="intro-header-left" style="background: #b17ea7;">
+                        <h2>單元介紹</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #e1cbe0;">
+                        <h1>匯報單元</h1>
+                        <p>能進行各種專題報告（普通話）</p>
+                        <p class="code">GCCH407A(P)</p>
+                    </div>
+                </div>
+
+                <div class="intro-section-block">
+                    <div class="intro-heading">
+                        <span class="large-num" style="color: #7b599c;">1</span>
+                        <h3>學習目標</h3>
+                    </div>
+                    <p style="font-size: 1.1rem; color: #444;">GCCH407A(P) 是資歷架構通用能力中的一個普通話能力單元（第四級），學生完成本單元後，能夠：</p>
+                    <ul class="intro-list">
+                        <li>以成段落的話語完成說服</li>
+                        <li>有效運用論證技巧加強說服力</li>
+                        <li>恰當運用報告技巧，熟練地以普通話進行報告</li>
+                    </ul>
+                </div>
+
+                <div class="intro-section-block">
+                    <div class="intro-heading">
+                        <span class="large-num" style="color: #7b599c;">2</span>
+                        <h3>課程內容</h3>
+                    </div>
+                    <p style="font-size: 1.1rem; color: #444;">本單元通過以下課題幫助學生逐步達到預期學習成果：</p>
+                    
+                    <div class="flowchart">
+                        <div class="flow-node" style="background:#86cae4; color:#333;">單元概覽</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#d0dce4; color:#333;">論證技巧</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#aeb8bf; color:white;">個案研習</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#bdd3a5; color:#333;">單元小結</div>
+                        <i class="fa-solid fa-arrow-right flow-arrow"></i>
+                        <div class="flow-node" style="background:#6ebd62; color:white;">單元檢測</div>
+                    </div>
+                </div>
+
+                <button class="enter-btn" style="background:#7b599c;" onclick="showView('lessons-view-report')">開始學習 ➔</button>
+            </div>
+        </section>
+
+        <section id="lessons-view-writing" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
+                <h2 style="text-align: center; color: #9070a1; font-size: 2rem; margin-bottom: 30px;">寫作單元：互動學習資源</h2>
+                
+                <div class="lessons-grid">
+                    <div class="lesson-book lb-grade-1" style="border-left-color: #ceadc6;" onclick="alert('進入：第一課 單元概覽')">
+                        <img src="P2.jpg" alt="第一課" class="lb-cover-img">
+                        <div class="lb-num">第一課</div>
+                        <div class="lb-title">單元概覽</div>
+                    </div>
+                    <div class="lesson-book lb-grade-2" style="border-left-color: #e4c1d9;" onclick="alert('進入：第二課 商業新聞稿')">
+                        <img src="P3.jpg" alt="第二課" class="lb-cover-img">
+                        <div class="lb-num">第二課</div>
+                        <div class="lb-title">商業新聞稿</div>
+                    </div>
+                    <div class="lesson-book lb-grade-3" style="border-left-color: #e4c1d9;" onclick="alert('進入：第三課 商業新聞稿個案研習')">
+                        <img src="P4.jpg" alt="第三課" class="lb-cover-img">
+                        <div class="lb-num">第三課</div>
+                        <div class="lb-title">商業新聞稿<br>個案研習</div>
+                    </div>
+                    <div class="lesson-book lb-grade-4" style="border-left-color: #f4d9e7;" onclick="alert('進入：第四課 推廣信')">
+                        <img src="P5.jpg" alt="第四課" class="lb-cover-img">
+                        <div class="lb-num">第四課</div>
+                        <div class="lb-title">推廣信</div>
+                    </div>
+                    <div class="lesson-book lb-grade-5" style="border-left-color: #f4d9e7;" onclick="alert('進入：第五課 推廣信個案研習')">
+                        <img src="P6.jpg" alt="第五課" class="lb-cover-img">
+                        <div class="lb-num">第五課</div>
+                        <div class="lb-title">推廣信<br>個案研習</div>
+                    </div>
+                    <div class="lesson-book lb-grade-6" style="border-left-color: #a5c7df;" onclick="alert('進入：第六課 單元小結')">
+                        <img src="P7.jpg" alt="第六課" class="lb-cover-img">
+                        <div class="lb-num">第六課</div>
+                        <div class="lb-title">單元小結</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="lessons-view-report" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
+                <h2 style="text-align: center; color: #7b599c; font-size: 2rem; margin-bottom: 30px;">匯報單元：互動學習資源</h2>
+                
+                <div class="lessons-grid">
+                    <div class="lesson-book lb-grade-7" style="border-left-color: #86cae4;" onclick="alert('進入：第七課 單元概覽')">
+                        <img src="P8.jpg" alt="第七課" class="lb-cover-img">
+                        <div class="lb-num">第七課</div>
+                        <div class="lb-title">單元概覽</div>
+                    </div>
+                    <div class="lesson-book lb-grade-8" style="border-left-color: #d0dce4;" onclick="alert('進入：第八課 論證技巧')">
+                        <img src="P9.jpg" alt="第八課" class="lb-cover-img">
+                        <div class="lb-num">第八課</div>
+                        <div class="lb-title">論證技巧</div>
+                    </div>
+                    <div class="lesson-book lb-grade-9" style="border-left-color: #aeb8bf;" onclick="alert('進入：第九課 個案研習')">
+                        <img src="P10.jpg" alt="第九課" class="lb-cover-img">
+                        <div class="lb-num">第九課</div>
+                        <div class="lb-title">個案研習</div>
+                    </div>
+                    <div class="lesson-book lb-grade-10" style="border-left-color: #bdd3a5;" onclick="alert('進入：第十課 單元小結')">
+                        <img src="P11.jpg" alt="第十課" class="lb-cover-img">
+                        <div class="lb-num">第十課</div>
+                        <div class="lb-title">單元小結</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
