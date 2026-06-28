@@ -141,9 +141,44 @@
         .intro-list li { margin-bottom: 10px; position: relative; }
         .intro-list li::before { content: "▶"; position: absolute; left: -25px; color: #f1c40f; font-size: 1.2rem; }
 
-        .flowchart { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; margin-top: 20px; padding-left: 20px; }
-        .flow-node { padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; color: #333; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .flow-arrow { color: #aaa; font-size: 1.2rem; }
+        /* --- 流程圖美化設計 --- */
+        .flowchart { 
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15px; 
+            margin-top: 30px; padding: 35px 20px; 
+            background: #ffffff; border-radius: 20px; 
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.02), 0 8px 25px rgba(0,0,0,0.04); 
+            border: 2px dashed #dcdde1;
+            counter-reset: flow-step; 
+        }
+        .flow-node { 
+            position: relative; padding: 12px 25px 12px 48px; 
+            border-radius: 50px; font-weight: 900; font-size: 1.1rem; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .flow-node:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        /* 自動編號圈圈 (適應背景色) */
+        .flow-node::before {
+            counter-increment: flow-step;
+            content: counter(flow-step);
+            position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+            width: 28px; height: 28px;
+            background: rgba(0, 0, 0, 0.15); /* 適應性半透明深色圓圈 */
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 0.95rem; font-weight: 900; color: inherit; 
+        }
+        .flow-arrow { 
+            color: #b2bec3; font-size: 1.4rem; 
+            animation: pulseArrow 1.5s infinite alternate ease-in-out;
+        }
+        @keyframes pulseArrow {
+            from { transform: translateX(-3px); opacity: 0.6; }
+            to { transform: translateX(3px); opacity: 1; color: #74b9ff; }
+        }
 
         /* --- 5. 互動學習資源 (書本櫃) --- */
         .lessons-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; padding: 20px 0; }
@@ -179,38 +214,64 @@
         .lb-grade-9 { background: linear-gradient(135deg, #f9fbe7 0%, #ffffff 100%); } 
         .lb-grade-10 { background: linear-gradient(135deg, #efebe9 0%, #ffffff 100%); } 
 
-        /* --- 6. 彈跳視窗 Modal 設計 --- */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
+        /* --- 7. 內嵌標籤頁外殼設計 (Tabs) --- */
+        .lesson-tabs-container {
+            margin-top: 40px;
         }
-        .modal-content {
-            background: white; width: 90%; max-width: 550px; border-radius: var(--border-radius-lg);
-            padding: 40px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            max-height: 85vh; overflow-y: auto;
-            animation: appModalSpawn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+        .lesson-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: -20px; 
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
-        @keyframes appModalSpawn {
-            from { transform: translateY(50px) scale(0.9); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+        .tab-btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            background: #ffffff;
+            border: 3px solid #e4c1d9; 
+            color: #9070a1;
+            font-weight: 900;
+            font-size: 1.15rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .close-btn {
-            position: absolute; top: 15px; right: 25px; font-size: 35px; cursor: pointer;
-            color: #b2bec3; transition: 0.3s;
+        .tab-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(144, 112, 161, 0.2);
+            background: #fdf0f6;
         }
-        .close-btn:hover { color: #ff6b6b; transform: rotate(90deg); }
-        .modal-header {
-            font-size: 2rem; margin-bottom: 20px; font-weight: 900; padding-bottom: 15px;
-            border-bottom: 4px solid #f1f3f5; text-align: center;
+        .tab-btn.active {
+            background: var(--accent-4002-gradient);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 10px 25px rgba(155, 89, 182, 0.4);
         }
-        
-        .copy-link-btn {
-            background-color: white; border: 2px solid #ddd; border-radius: 50px; padding: 10px 25px;
-            font-size: 1rem; font-weight: bold; color: var(--text-sub); cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%; max-width: 250px;
+        .tab-content-container {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 50px 40px 40px 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border-top: 8px solid #9b59b6;
+            position: relative;
+            z-index: 1;
+            min-height: 350px; 
         }
-        .copy-link-btn:hover { background-color: #f8f9fa; border-color: #ccc; color: var(--text-main); }
+        .tab-pane {
+            display: none;
+            animation: tabFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         @media (max-width: 850px) { 
             .toc-grid { grid-template-columns: 1fr; } 
@@ -239,13 +300,10 @@
             <div class="library-container">
                 <div class="course-book" onclick="showView('toc-view')">
                     <div class="book-title">職業中文傳意</div>
-                    
                     <div class="book-cover-img-container">
                         <img src="P1.jpg" alt="職業中文推介文書封面圖" class="book-cover-img">
                     </div>
-
                     <div class="book-main-topic">普通話報告與<br>推介文書</div>
-                    
                     <div class="book-footer">
                         <p class="book-code-dark">LAN4002</p>
                         <div class="book-icons">
@@ -456,13 +514,14 @@
             </div>
         </section>
 
+        <!-- 寫作單元：課程列表 -->
         <section id="lessons-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
                 <h2 style="text-align: center; color: #9070a1; font-size: 2rem; margin-bottom: 30px;">寫作單元：互動學習資源</h2>
                 
                 <div class="lessons-grid">
-                    <div class="lesson-book lb-grade-1" style="border-left-color: #ceadc6;" onclick="alert('進入：第一課 單元概覽')">
+                    <div class="lesson-book lb-grade-1" style="border-left-color: #ceadc6;" onclick="showView('lesson-detail-view-1')">
                         <img src="P2.jpg" alt="第一課" class="lb-cover-img">
                         <div class="lb-num">第一課</div>
                         <div class="lb-title">單元概覽</div>
@@ -472,22 +531,22 @@
                         <div class="lb-num">第二課</div>
                         <div class="lb-title">商業新聞稿</div>
                     </div>
-                    <div class="lesson-book lb-grade-3" style="border-left-color: #e4c1d9;" onclick="alert('進入：第三課 商業新聞稿個案研習')">
+                    <div class="lesson-book lb-grade-3" style="border-left-color: #e4c1d9;" onclick="showView('lesson-detail-view-3')">
                         <img src="P4.jpg" alt="第三課" class="lb-cover-img">
                         <div class="lb-num">第三課</div>
                         <div class="lb-title">商業新聞稿<br>個案研習</div>
                     </div>
-                    <div class="lesson-book lb-grade-4" style="border-left-color: #f4d9e7;" onclick="alert('進入：第四課 推廣信')">
+                    <div class="lesson-book lb-grade-4" style="border-left-color: #f4d9e7;" onclick="showView('lesson-detail-view-4')">
                         <img src="P5.jpg" alt="第四課" class="lb-cover-img">
                         <div class="lb-num">第四課</div>
                         <div class="lb-title">推廣信</div>
                     </div>
-                    <div class="lesson-book lb-grade-5" style="border-left-color: #f4d9e7;" onclick="alert('進入：第五課 推廣信個案研習')">
+                    <div class="lesson-book lb-grade-5" style="border-left-color: #f4d9e7;" onclick="showView('lesson-detail-view-5')">
                         <img src="P6.jpg" alt="第五課" class="lb-cover-img">
                         <div class="lb-num">第五課</div>
                         <div class="lb-title">推廣信<br>個案研習</div>
                     </div>
-                    <div class="lesson-book lb-grade-6" style="border-left-color: #a5c7df;" onclick="alert('進入：第六課 單元小結')">
+                    <div class="lesson-book lb-grade-6" style="border-left-color: #a5c7df;" onclick="showView('lesson-detail-view-6')">
                         <img src="P7.jpg" alt="第六課" class="lb-cover-img">
                         <div class="lb-num">第六課</div>
                         <div class="lb-title">單元小結</div>
@@ -496,10 +555,55 @@
             </div>
         </section>
 
+        <!-- 第一課詳情面板 -->
+        <section id="lesson-detail-view-1" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #ceadc6;">
+                        <h2 style="color: #444;">第一課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #fdf0f6;">
+                        <h1>單元概覽</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #ceadc6; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #ceadc6;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>認識宣傳推介文書</li>
+                        <li>掌握宣傳策略</li>
+                        <li>掌握建構宣傳內容的步驟及策略</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-1-1', this)">1. 宣傳策略</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-1-2', this)">2. 建構宣傳內容</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-1-3', this)">3. 綜合練習</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-1-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 宣傳策略 內容放置處】</h2>
+                        </div>
+                        <div id="pane-1-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 建構宣傳內容 內容放置處】</h2>
+                        </div>
+                        <div id="pane-1-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 綜合練習 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第二課詳情面板 -->
         <section id="lesson-detail-view-2" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
-                
                 <div class="intro-header-wrapper" style="margin-top: 30px;">
                     <div class="intro-header-left" style="background: #e4c1d9;">
                         <h2 style="color: #444;">第二課</h2>
@@ -508,7 +612,6 @@
                         <h1>商業新聞稿</h1>
                     </div>
                 </div>
-
                 <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #e4c1d9; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
                     <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-bullseye" style="color: #e4c1d9;"></i> 學習成果
@@ -521,39 +624,254 @@
                     </ol>
                 </div>
 
-                <h3 style="text-align: center; color: #2d3436; font-size: 1.8rem; margin-bottom: 30px; border-bottom: 2px dashed #eee; padding-bottom: 15px;">本課互動教學活動</h3>
-                
-                <div class="chest-container">
-                    <div class="chest-item" style="border-top-color: #9070a1;" onclick="openGameModal()">
-                        <span class="chest-icon"><i class="fa-solid fa-chess-knight" style="color: #9070a1;"></i></span>
-                        <div class="chest-title" style="color: #9070a1; font-size: 1.3rem;">1-認識商業新聞稿</div>
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-2-1', this)">1. 新聞和商業新聞稿</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-2-2', this)">2. 預期學習成果</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-2-3', this)">3. 寫作策略</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-2-4', this)">4. 寫作步驟</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-2-5', this)">5. 遊戲區</button>
+                    </div>
+
+                    <div class="tab-content-container">
+                        <div id="pane-2-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 新聞和商業新聞稿 內容放置處】</h2>
+                        </div>
+                        <div id="pane-2-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 預期學習成果 內容放置處】</h2>
+                        </div>
+                        <div id="pane-2-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 寫作策略 內容放置處】</h2>
+                        </div>
+                        <div id="pane-2-4" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 寫作步驟 內容放置處】</h2>
+                        </div>
+                        <div id="pane-2-5" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【5. 遊戲區 內容放置處】</h2>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- 第三課詳情面板 -->
+        <section id="lesson-detail-view-3" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #e4c1d9;">
+                        <h2 style="color: #444;">第三課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #fdf0f6;">
+                        <h1>商業新聞稿個案研習</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #e4c1d9; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #e4c1d9;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以運用商業新聞稿的寫作策略，完成以下任務，包括：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>適當篩選資料，突顯新聞價值</li>
+                        <li>根據倒金字塔的結構組織內容</li>
+                        <li>恰當使用新聞用語</li>
+                        <li>撰寫主旨明確、剪裁恰當、文理連貫、格式正確的商業新聞稿</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-3-1', this)">1. 商業新聞稿個案研習</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-3-2', this)">2. 商業新聞稿寫作練習</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-3-3', this)">3. 訓練區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-3-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 商業新聞稿個案研習 內容放置處】</h2>
+                        </div>
+                        <div id="pane-3-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 商業新聞稿寫作練習 內容放置處】</h2>
+                        </div>
+                        <div id="pane-3-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 訓練區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第四課詳情面板 -->
+        <section id="lesson-detail-view-4" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #f4d9e7;">
+                        <h2 style="color: #444;">第四課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #fdf0f6;">
+                        <h1>推廣信</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #f4d9e7; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #f4d9e7;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>認識推廣信的特點與內容結構</li>
+                        <li>掌握推廣信的寫作策略</li>
+                        <li>運用適當策略，撰寫推廣信</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-4-1', this)">1. 推廣信的定義與特點</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-4-2', this)">2. 預期學習成果</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-4-3', this)">3. 寫作策略</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-4-4', this)">4. 寫作步驟</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-4-5', this)">5. 遊戲區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-4-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 推廣信的定義與特點 內容放置處】</h2>
+                        </div>
+                        <div id="pane-4-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 預期學習成果 內容放置處】</h2>
+                        </div>
+                        <div id="pane-4-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 寫作策略 內容放置處】</h2>
+                        </div>
+                        <div id="pane-4-4" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 寫作步驟 內容放置處】</h2>
+                        </div>
+                        <div id="pane-4-5" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【5. 遊戲區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第五課詳情面板 -->
+        <section id="lesson-detail-view-5" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #f4d9e7;">
+                        <h2 style="color: #444;">第五課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #fdf0f6;">
+                        <h1>推廣信個案研習</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #f4d9e7; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #f4d9e7;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以熟練運用推廣信的寫作策略，完成以下任務，包括：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>適當篩選資料，確定產品賣點和好處</li>
+                        <li>根據推廣五要素組織內容</li>
+                        <li>恰當使用推廣用語</li>
+                        <li>撰寫主旨明確、剪裁恰當、文理連貫、格式正確的推廣信</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-5-1', this)">1. 推廣信個案研習</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-5-2', this)">2. 推廣信寫作練習</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-5-3', this)">3. 訓練區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-5-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 推廣信個案研習 內容放置處】</h2>
+                        </div>
+                        <div id="pane-5-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 推廣信寫作練習 內容放置處】</h2>
+                        </div>
+                        <div id="pane-5-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 訓練區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第六課詳情面板 -->
+        <section id="lesson-detail-view-6" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #a5c7df;">
+                        <h2 style="color: #444;">第六課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #f4f9ff;">
+                        <h1>單元小結</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #a5c7df; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #a5c7df;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>掌握推介文書的寫作技巧和要求</li>
+                        <li>鞏固推介文書的寫作技巧及內容結構</li>
+                        <li>擴充推廣文書的常用字詞，提升寫作的靈活性</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-6-1', this)">1. 強化練習</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-6-2', this)">2. 評核錦囊</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-6-3', this)">3. 常用詞匯表</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-6-4', this)">4. 特訓區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-6-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 強化練習 內容放置處】</h2>
+                        </div>
+                        <div id="pane-6-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 評核錦囊 內容放置處】</h2>
+                        </div>
+                        <div id="pane-6-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 常用詞匯表 內容放置處】</h2>
+                        </div>
+                        <div id="pane-6-4" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 特訓區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 匯報單元：課程列表 -->
         <section id="lessons-view-report" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
                 <h2 style="text-align: center; color: #7b599c; font-size: 2rem; margin-bottom: 30px;">匯報單元：互動學習資源</h2>
                 
                 <div class="lessons-grid">
-                    <div class="lesson-book lb-grade-7" style="border-left-color: #86cae4;" onclick="alert('進入：第七課 單元概覽')">
+                    <div class="lesson-book lb-grade-7" style="border-left-color: #86cae4;" onclick="showView('lesson-detail-view-7')">
                         <img src="P8.jpg" alt="第七課" class="lb-cover-img">
                         <div class="lb-num">第七課</div>
                         <div class="lb-title">單元概覽</div>
                     </div>
-                    <div class="lesson-book lb-grade-8" style="border-left-color: #d0dce4;" onclick="alert('進入：第八課 論證技巧')">
+                    <div class="lesson-book lb-grade-8" style="border-left-color: #d0dce4;" onclick="showView('lesson-detail-view-8')">
                         <img src="P9.jpg" alt="第八課" class="lb-cover-img">
                         <div class="lb-num">第八課</div>
                         <div class="lb-title">論證技巧</div>
                     </div>
-                    <div class="lesson-book lb-grade-9" style="border-left-color: #aeb8bf;" onclick="alert('進入：第九課 個案研習')">
+                    <div class="lesson-book lb-grade-9" style="border-left-color: #aeb8bf;" onclick="showView('lesson-detail-view-9')">
                         <img src="P10.jpg" alt="第九課" class="lb-cover-img">
                         <div class="lb-num">第九課</div>
                         <div class="lb-title">個案研習</div>
                     </div>
-                    <div class="lesson-book lb-grade-10" style="border-left-color: #bdd3a5;" onclick="alert('進入：第十課 單元小結')">
+                    <div class="lesson-book lb-grade-10" style="border-left-color: #bdd3a5;" onclick="showView('lesson-detail-view-10')">
                         <img src="P11.jpg" alt="第十課" class="lb-cover-img">
                         <div class="lb-num">第十課</div>
                         <div class="lb-title">單元小結</div>
@@ -562,39 +880,217 @@
             </div>
         </section>
 
-    </main>
-
-    <div class="modal-overlay" id="gameModal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeGameModal()">&times;</span>
-            <div class="modal-header" style="background: var(--accent-4002-gradient); -webkit-background-clip: text; color: transparent;">
-                1-認識商業新聞稿
-            </div>
-            
-            <div class="modal-body">
-                <h3 style="color: #9070a1; font-size: 1.3rem; margin-top: 10px;">學習內容：</h3>
-                <ul style="list-style: none; padding: 20px; line-height: 2; font-size: 1.15rem; color: #444; background: #fdf0f6; border-radius: 12px; border: 1px solid #f4d9e7; margin-bottom: 30px;">
-                    <li><i class="fa-solid fa-pen" style="color: #9070a1; margin-right: 10px;"></i> 新聞與商業新聞稿的比較</li>
-                    <li><i class="fa-solid fa-pen" style="color: #9070a1; margin-right: 10px;"></i> 寫作目的</li>
-                    <li><i class="fa-solid fa-pen" style="color: #9070a1; margin-right: 10px;"></i> 發布途徑與特點</li>
-                </ul>
-                
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding-top: 20px; border-top: 2px dashed #eee;">
-                    
-                    <a href="https://winwin1109.github.io/press-release-1/" target="_blank" class="enter-btn" style="margin: 0; background: var(--accent-4002-gradient);">👉 進入活動</a>
-                    
-                    <div style="text-align: center; margin-top: 10px;">
-                        <img src="Q1.jpg" alt="活動 QR Code" style="max-width: 180px; border: 4px solid #f1f3f5; padding: 8px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+        <!-- 第七課詳情面板 -->
+        <section id="lesson-detail-view-7" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #86cae4;">
+                        <h2 style="color: #444;">第七課</h2>
                     </div>
-                    
-                    <button class="copy-link-btn" onclick="copyGameLink('https://winwin1109.github.io/press-release-1/', this)">
-                        <i class="fa-regular fa-copy"></i> 複製連結
-                    </button>
+                    <div class="intro-header-right" style="background: #f4f9ff;">
+                        <h1>單元概覽</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #86cae4; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #86cae4;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>認識專題研習（Project Based learning）概念</li>
+                        <li>認識報告單元的學習重點
+                            <ul style="list-style-type: none; padding-left: 0; margin-top: 5px;">
+                                <li style="position: relative; padding-left: 15px; margin-bottom: 5px;">
+                                    <span style="position: absolute; left: 0; color: #86cae4; font-weight: bold;">•</span> 內容結構：開場、主體、結尾
+                                </li>
+                                <li style="position: relative; padding-left: 15px; margin-bottom: 5px;">
+                                    <span style="position: absolute; left: 0; color: #86cae4; font-weight: bold;">•</span> 語言功能：說服
+                                </li>
+                                <li style="position: relative; padding-left: 15px; margin-bottom: 5px;">
+                                    <span style="position: absolute; left: 0; color: #86cae4; font-weight: bold;">•</span> 搜集第一手資料的方法
+                                </li>
+                            </ul>
+                        </li>
+                        <li>措辭恰當，並能根據報告的目的和場合調整說話策略</li>
+                    </ol>
+                </div>
 
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-7-1', this)">1. 語言功能介紹-說服</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-7-2', this)">2. 預期學習成果</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-7-3', this)">3. 蒐集資料的方法</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-7-4', this)">4. 遊戲區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-7-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 語言功能介紹-說服 內容放置處】</h2>
+                        </div>
+                        <div id="pane-7-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 預期學習成果 內容放置處】</h2>
+                        </div>
+                        <div id="pane-7-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 蒐集資料的方法 內容放置處】</h2>
+                        </div>
+                        <div id="pane-7-4" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 遊戲區 內容放置處】</h2>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <!-- 第八課詳情面板 -->
+        <section id="lesson-detail-view-8" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #d0dce4;">
+                        <h2 style="color: #444;">第八課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #f4f9ff;">
+                        <h1>論證技巧</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #d0dce4; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #d0dce4;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以掌握論證的技巧，包括：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>建立論點</li>
+                        <li>組織論據</li>
+                        <li>恰當使用論證方法</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-8-1', this)">1. 論點</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-8-2', this)">2. 論據</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-8-3', this)">3. 論證方法</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-8-4', this)">4. 小組研習</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-8-5', this)">5. 遊戲區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-8-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 論點 內容放置處】</h2>
+                        </div>
+                        <div id="pane-8-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 論據 內容放置處】</h2>
+                        </div>
+                        <div id="pane-8-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 論證方法 內容放置處】</h2>
+                        </div>
+                        <div id="pane-8-4" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 小組研習 內容放置處】</h2>
+                        </div>
+                        <div id="pane-8-5" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【5. 遊戲區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第九課詳情面板 -->
+        <section id="lesson-detail-view-9" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #aeb8bf;">
+                        <h2 style="color: white;">第九課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #f8f9fa;">
+                        <h1>個案研習</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #aeb8bf; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #aeb8bf;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以應用論證技巧完成任務，包括：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>建立中心論點和分論點</li>
+                        <li>整合資料，組織論據</li>
+                        <li>選用適當的論證方法，加強說服力</li>
+                        <li>表達時結構完整，語句連貫，內容成段</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-9-1', this)">1. 說服</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-9-2', this)">2. 報告策略</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-9-3', this)">3. 小組研習報告</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-9-4', this)">4. 訓練區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-9-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 說服 內容放置處】</h2>
+                        </div>
+                        <div id="pane-9-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 報告策略 內容放置處】</h2>
+                        </div>
+                        <div id="pane-9-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 小組研習報告 內容放置處】</h2>
+                        </div>
+                        <div id="pane-9-4" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 訓練區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第十課詳情面板 -->
+        <section id="lesson-detail-view-10" class="view-section">
+            <div class="content-container">
+                <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
+                <div class="intro-header-wrapper" style="margin-top: 30px;">
+                    <div class="intro-header-left" style="background: #bdd3a5;">
+                        <h2 style="color: #444;">第十課</h2>
+                    </div>
+                    <div class="intro-header-right" style="background: #f6fbf4;">
+                        <h1>單元小結</h1>
+                    </div>
+                </div>
+                <div style="background: #fff; padding: 30px; border-radius: 15px; border-left: 8px solid #bdd3a5; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 40px;">
+                    <h3 style="color: #444; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bullseye" style="color: #bdd3a5;"></i> 學習成果
+                    </h3>
+                    <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以掌握普通話專題報告的評核技巧，包括：</p>
+                    <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
+                        <li>建立完整的結構</li>
+                        <li>準確建立論點</li>
+                        <li>採用正確的方法搜集論據</li>
+                        <li>製作符合要求的簡報</li>
+                    </ol>
+                </div>
+
+                <div class="lesson-tabs-container">
+                    <div class="lesson-tabs">
+                        <button class="tab-btn active" onclick="switchLessonTab('pane-10-1', this)">1. 評核錦囊</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-10-2', this)">2. 報告演練</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-10-3', this)">3. 特訓區</button>
+                    </div>
+                    <div class="tab-content-container">
+                        <div id="pane-10-1" class="tab-pane active">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 評核錦囊 內容放置處】</h2>
+                        </div>
+                        <div id="pane-10-2" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 報告演練 內容放置處】</h2>
+                        </div>
+                        <div id="pane-10-3" class="tab-pane">
+                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 特訓區 內容放置處】</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <script>
         // 視圖切換
@@ -604,42 +1100,33 @@
             window.scrollTo(0, 0);
         }
 
-        // 打開遊戲彈跳視窗
-        function openGameModal() {
-            document.getElementById('gameModal').style.display = 'flex';
-        }
-
-        // 關閉遊戲彈跳視窗
-        function closeGameModal() {
-            document.getElementById('gameModal').style.display = 'none';
-        }
-
-        // 點擊 Modal 外部時關閉
-        window.onclick = function(event) {
-            const modal = document.getElementById('gameModal');
-            if (event.target == modal) {
-                closeGameModal();
-            }
-        }
-
-        // 複製連結功能
-        function copyGameLink(url, btn) {
-            navigator.clipboard.writeText(url).then(() => {
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '✅ 已複製！可傳給學生';
-                btn.style.backgroundColor = '#d4edda';
-                btn.style.borderColor = '#c3e6cb';
-                btn.style.color = '#155724';
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.style.backgroundColor = 'white';
-                    btn.style.borderColor = '#ddd';
-                    btn.style.color = 'var(--text-sub)';
-                }, 2000);
-            }).catch(err => {
-                alert('複製失敗，請手動複製連結。');
+        // ==========================================
+        // 課程內文標籤頁 (Tabs) 切換邏輯
+        // ==========================================
+        function switchLessonTab(paneId, btnElement) {
+            // 找到當前所在的 lesson 容器
+            const container = btnElement.closest('.lesson-tabs-container');
+            
+            // 1. 隱藏該容器內的所有內容面板
+            container.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
             });
+            
+            // 2. 移除該容器內所有按鈕的 active 狀態
+            container.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 3. 顯示被點擊的內容面板
+            document.getElementById(paneId).classList.add('active');
+            
+            // 4. 將被點擊的按鈕加上 active 狀態
+            btnElement.classList.add('active');
+            
+            // 5. 將畫面平滑滾動到標籤區塊，確保學生切換時從頭看起
+            if(container) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
     </script>
 </body>
