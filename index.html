@@ -80,7 +80,7 @@
         .book-code-dark { font-size: 1.2rem; color: #2d3436; font-weight: bold; margin: 0; }
         .book-icons { display: flex; gap: 10px; margin-top: 8px; color: #636e72; font-size: 1rem; }
 
-        /* --- 2. 專業目錄設計 --- */
+        /* --- 2. 專業目錄設計 (已升級為按鍵) --- */
         .toc-container, .content-container {
             max-width: 950px; margin: 0 auto; background: white;
             padding: 50px; border-radius: var(--border-radius-lg);
@@ -88,32 +88,41 @@
         }
         .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
         .toc-unit { background: #f8f9fa; padding: 25px; border-radius: 20px; border-top: 6px solid var(--accent-4002-start); }
-        .toc-unit h2 { color: var(--accent-4002-start); font-size: 1.2rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; text-align: left; line-height: 1.4;}
         .toc-lesson { margin-bottom: 15px; }
-        .toc-lesson-title { font-weight: bold; color: #2d3436; font-size: 1.1rem; display: block; margin-bottom: 5px; }
-        .toc-sub { font-size: 0.9rem; color: #636e72; list-style: none; padding-left: 15px; margin: 0; }
-        .toc-sub li { margin-bottom: 3px; position: relative; }
+        .toc-sub { font-size: 0.9rem; color: #636e72; list-style: none; padding-left: 20px; margin: 0; }
+        .toc-sub li { margin-bottom: 5px; position: relative; }
         .toc-sub li::before { content: "•"; color: var(--accent-4002-end); position: absolute; left: -12px; }
 
-        .enter-btn {
-            display: block; width: 280px; margin: 40px auto 0; padding: 15px;
-            background: var(--accent-4002-gradient); color: white; text-align: center;
-            text-decoration: none; border-radius: 50px; font-weight: 900; font-size: 1.2rem;
-            box-shadow: 0 8px 20px rgba(236, 64, 122, 0.3); transition: 0.3s; border: none; cursor: pointer;
+        /* 互動式單元大標題按鍵 */
+        .unit-title-link {
+            cursor: pointer; color: white; background: var(--accent-4002-gradient); 
+            padding: 10px 20px; border-radius: 30px; display: inline-flex; align-items: center; 
+            gap: 10px; font-size: 1.2rem; font-weight: 900; transition: 0.3s; 
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3); border: none; margin-bottom: 10px;
         }
-        .enter-btn:hover { transform: scale(1.05); box-shadow: 0 12px 25px rgba(236, 64, 122, 0.4); }
+        .unit-title-link:hover {
+            transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 20px rgba(155, 89, 182, 0.5);
+        }
 
-        /* --- 3. 資源列表頁面 --- */
-        .shelf-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 3px solid #f1f3f5; padding-bottom: 15px; }
-        .chest-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; }
-        .chest-item {
-            width: 260px; padding: 30px 20px; background: #fff; border-radius: 15px;
-            border: 2px solid #f1f3f5; text-align: center; cursor: pointer; transition: 0.3s;
-            border-top: 6px solid var(--accent-4002-start); box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        /* 互動式各課小標題按鍵 */
+        .toc-lesson-title.clickable {
+            cursor: pointer; transition: 0.3s; padding: 10px 15px; border-radius: 12px; 
+            background: #fff; border: 2px solid transparent; display: flex; align-items: center; 
+            justify-content: space-between; color: #2d3436; font-weight: 900; margin-bottom: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04); width: 100%; box-sizing: border-box;
+            font-size: 1.05rem;
         }
-        .chest-item:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: var(--accent-4002-end); }
-        .chest-icon { font-size: 70px; margin-bottom: 15px; display: block; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1)); }
-        .chest-title { font-weight: 900; font-size: 1.2rem; color: var(--accent-4002-start); }
+        .toc-lesson-title.clickable::after {
+            content: "\f061"; /* FontAwesome 箭頭 */
+            font-family: "Font Awesome 6 Free"; font-weight: 900; opacity: 0.5; transform: translateX(-5px); 
+            transition: 0.3s; color: var(--accent-4002-start); font-size: 0.9rem;
+        }
+        .toc-lesson-title.clickable:hover {
+            background: #fdf0f6; border-color: #e4c1d9; color: var(--accent-4002-start); transform: translateX(5px);
+        }
+        .toc-lesson-title.clickable:hover::after {
+            opacity: 1; transform: translateX(0);
+        }
 
         .back-btn {
             padding: 10px 25px; background: #b2bec3; color: white; border: none;
@@ -141,6 +150,14 @@
         .intro-list { list-style: none; padding-left: 20px; line-height: 1.8; font-size: 1.1rem; color: #444; }
         .intro-list li { margin-bottom: 10px; position: relative; }
         .intro-list li::before { content: "▶"; position: absolute; left: -25px; color: #f1c40f; font-size: 1.2rem; }
+
+        .enter-btn {
+            display: block; width: 280px; margin: 40px auto 0; padding: 15px;
+            background: var(--accent-4002-gradient); color: white; text-align: center;
+            text-decoration: none; border-radius: 50px; font-weight: 900; font-size: 1.2rem;
+            box-shadow: 0 8px 20px rgba(236, 64, 122, 0.3); transition: 0.3s; border: none; cursor: pointer;
+        }
+        .enter-btn:hover { transform: scale(1.05); box-shadow: 0 12px 25px rgba(236, 64, 122, 0.4); }
 
         /* --- 流程圖美化設計 --- */
         .flowchart { 
@@ -340,7 +357,6 @@
     </header>
 
     <main>
-        <!-- 封面區塊 -->
         <section id="library-view" class="view-section active">
             <div class="library-container">
                 <div class="course-book" onclick="showView('toc-view')">
@@ -365,7 +381,6 @@
             <p style="text-align:center; color:#636e72; font-weight: bold;">👉 點擊書本展開目錄</p>
         </section>
 
-        <!-- 目錄與選單區塊 -->
         <section id="toc-view" class="view-section">
             <div class="toc-container">
                 <button class="back-btn" onclick="showView('library-view')">⬅ 返回書櫃</button>
@@ -374,90 +389,75 @@
                 
                 <div class="toc-grid">
                     <div class="toc-unit">
-                        <h2>一、寫作單元<br><span style="font-size: 0.95em; color:#555;">能寫作各種專業宣傳推介文書</span></h2>
+                        <h2 style="border-bottom: none; padding-bottom: 0;">
+                            <span class="unit-title-link" onclick="showView('intro-view-writing')">一、寫作單元 <i class="fa-solid fa-arrow-right"></i></span>
+                            <span style="font-size: 0.95em; color:#555; display:block; margin-top: 10px; font-weight:normal; padding-left:5px;">能寫作各種專業宣傳推介文書</span>
+                        </h2>
+                        
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">單元介紹</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('intro-view-writing')">單元介紹</span>
                             <ul class="toc-sub"><li>學習目標</li><li>課程內容</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第一課 單元概覽</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-1')">第一課 單元概覽</span>
                             <ul class="toc-sub"><li>宣傳策略</li><li>建構宣傳內容</li><li>綜合練習</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第二課 商業新聞稿</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-2')">第二課 商業新聞稿</span>
                             <ul class="toc-sub"><li>新聞與商業新聞稿</li><li>預期學習成果</li><li>寫作策略</li><li>寫作步驟</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第三課 商業新聞稿個案研習</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-3')">第三課 商業新聞稿個案研習</span>
                             <ul class="toc-sub"><li>商業新聞稿</li><li>商業新聞稿寫作練習</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第四課 推廣信</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-4')">第四課 推廣信</span>
                             <ul class="toc-sub"><li>推廣信的定義與特點</li><li>預期學習成果</li><li>寫作策略</li><li>寫作步驟</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第五課 推廣信個案研習</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-5')">第五課 推廣信個案研習</span>
                             <ul class="toc-sub"><li>個案研習</li><li>推廣信寫作練習</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第六課 單元小結</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-6')">第六課 單元小結</span>
                             <ul class="toc-sub"><li>強化訓練</li><li>評核錦囊</li><li>常用詞彙表</li></ul>
                         </div>
                     </div>
 
                     <div class="toc-unit">
-                        <h2>二、匯報單元<br><span style="font-size: 0.95em; color:#555;">能進行各種專題報告(普通話)</span></h2>
+                        <h2 style="border-bottom: none; padding-bottom: 0;">
+                            <span class="unit-title-link" onclick="showView('intro-view-report')" style="background: linear-gradient(135deg, #7b599c 0%, #b17ea7 100%);">二、匯報單元 <i class="fa-solid fa-arrow-right"></i></span>
+                            <span style="font-size: 0.95em; color:#555; display:block; margin-top: 10px; font-weight:normal; padding-left:5px;">能進行各種專題報告(普通話)</span>
+                        </h2>
+                        
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">單元介紹</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('intro-view-report')">單元介紹</span>
                             <ul class="toc-sub"><li>學習目標</li><li>課程內容</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第七課 單元概覽</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-7')">第七課 單元概覽</span>
                             <ul class="toc-sub"><li>語言功能介紹——說服</li><li>預期學習成果</li><li>搜集資料的方法：第一手資料</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第八課 論證技巧</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-8')">第八課 論證技巧</span>
                             <ul class="toc-sub"><li>論點</li><li>論據</li><li>論證方法</li><li>小組研習</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第九課 個案研習</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-9')">第九課 個案研習</span>
                             <ul class="toc-sub"><li>說服</li><li>報告策略</li><li>小組研習報告</li></ul>
                         </div>
                         <div class="toc-lesson">
-                            <span class="toc-lesson-title">第十課 單元小結</span>
+                            <span class="toc-lesson-title clickable" onclick="showView('lesson-detail-view-10')">第十課 單元小結</span>
                             <ul class="toc-sub"><li>評核錦囊</li><li>報告演練</li></ul>
                         </div>
                     </div>
                 </div>
-
-                <button class="enter-btn" onclick="showView('shelf-view')">進入互動教學資源 ➔</button>
             </div>
         </section>
 
-        <section id="shelf-view" class="view-section">
-            <div class="content-container">
-                <div class="shelf-header">
-                    <h2 style="font-size: 2rem; margin: 0; color: #2d3436;">互動教學資源</h2>
-                    <button class="back-btn" onclick="showView('toc-view')">⬅ 返回目錄</button>
-                </div>
-                
-                <div class="chest-container">
-                    <div class="chest-item" onclick="showView('intro-view-writing')">
-                        <span class="chest-icon">📝</span>
-                        <div class="chest-title">寫作單元：單元介紹</div>
-                    </div>
-                    <div class="chest-item" style="border-top-color:#8e44ad;" onclick="showView('intro-view-report')">
-                        <span class="chest-icon">🗣️</span>
-                        <div class="chest-title" style="color:#8e44ad;">匯報單元：單元介紹</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 單元介紹區塊 -->
         <section id="intro-view-writing" class="view-section">
             <div class="content-container">
-                <button class="back-btn" onclick="showView('shelf-view')">⬅ 返回單元選擇</button>
+                <button class="back-btn" onclick="showView('toc-view')">⬅ 返回目錄</button>
                 
                 <div class="intro-header-wrapper">
                     <div class="intro-header-left" style="background: #9070a1;">
@@ -512,7 +512,7 @@
 
         <section id="intro-view-report" class="view-section">
             <div class="content-container">
-                <button class="back-btn" onclick="showView('shelf-view')">⬅ 返回單元選擇</button>
+                <button class="back-btn" onclick="showView('toc-view')">⬅ 返回目錄</button>
                 
                 <div class="intro-header-wrapper">
                     <div class="intro-header-left" style="background: #b17ea7;">
@@ -562,7 +562,6 @@
             </div>
         </section>
 
-        <!-- 寫作單元：課程列表 -->
         <section id="lessons-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
@@ -603,7 +602,6 @@
             </div>
         </section>
 
-        <!-- 第一課 -->
         <section id="lesson-detail-view-1" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -648,7 +646,6 @@
             </div>
         </section>
 
-        <!-- 第二課 (已更新：全縮放預覽圖及隱藏工作列) -->
         <section id="lesson-detail-view-2" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -683,7 +680,6 @@
 
                     <div class="tab-content-container">
                         
-                        <!-- 標籤 1：新聞和商業新聞稿 -->
                         <div id="pane-2-1" class="tab-pane active">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -709,7 +705,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 2：預期學習成果 -->
                         <div id="pane-2-2" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -734,7 +729,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 3：寫作策略 -->
                         <div id="pane-2-3" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -759,7 +753,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 4：寫作步驟 -->
                         <div id="pane-2-4" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -784,7 +777,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 5：遊戲區 -->
                         <div id="pane-2-5" class="tab-pane">
                             <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
                         </div>
@@ -793,7 +785,6 @@
             </div>
         </section>
 
-        <!-- 第三課詳情面板 -->
         <section id="lesson-detail-view-3" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -839,7 +830,6 @@
             </div>
         </section>
 
-        <!-- 第四課詳情面板 -->
         <section id="lesson-detail-view-4" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -892,7 +882,6 @@
             </div>
         </section>
 
-        <!-- 第五課詳情面板 -->
         <section id="lesson-detail-view-5" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -938,7 +927,6 @@
             </div>
         </section>
 
-        <!-- 第六課詳情面板 -->
         <section id="lesson-detail-view-6" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -988,7 +976,6 @@
         </section>
 
 
-        <!-- 匯報單元：課程列表 -->
         <section id="lessons-view-report" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
@@ -1019,7 +1006,6 @@
             </div>
         </section>
 
-        <!-- 第七課詳情面板 -->
         <section id="lesson-detail-view-7" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1080,7 +1066,6 @@
             </div>
         </section>
 
-        <!-- 第八課詳情面板 -->
         <section id="lesson-detail-view-8" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1133,7 +1118,6 @@
             </div>
         </section>
 
-        <!-- 第九課詳情面板 -->
         <section id="lesson-detail-view-9" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1183,7 +1167,6 @@
             </div>
         </section>
 
-        <!-- 第十課詳情面板 -->
         <section id="lesson-detail-view-10" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1231,7 +1214,6 @@
 
     </main>
 
-    <!-- Modal -->
     <div id="interactive-modal">
         <div class="modal-header">
             <button class="return-modal-btn" onclick="closeInteractiveModal()">
