@@ -161,13 +161,12 @@
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 12px 25px rgba(0,0,0,0.15);
         }
-        /* 自動編號圈圈 (適應背景色) */
         .flow-node::before {
             counter-increment: flow-step;
             content: counter(flow-step);
             position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
             width: 28px; height: 28px;
-            background: rgba(0, 0, 0, 0.15); /* 適應性半透明深色圓圈 */
+            background: rgba(0, 0, 0, 0.15); 
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
             font-size: 0.95rem; font-weight: 900; color: inherit; 
         }
@@ -215,69 +214,113 @@
         .lb-grade-10 { background: linear-gradient(135deg, #efebe9 0%, #ffffff 100%); } 
 
         /* --- 7. 內嵌標籤頁外殼設計 (Tabs) --- */
-        .lesson-tabs-container {
-            margin-top: 40px;
-        }
+        .lesson-tabs-container { margin-top: 40px; }
         .lesson-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: -20px; 
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 2;
+            display: flex; justify-content: center; gap: 15px; margin-bottom: -20px; 
+            flex-wrap: wrap; position: relative; z-index: 2;
         }
         .tab-btn {
-            padding: 12px 30px;
-            border-radius: 30px;
-            background: #ffffff;
-            border: 3px solid #e4c1d9; 
-            color: #9070a1;
-            font-weight: 900;
-            font-size: 1.15rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 12px 30px; border-radius: 30px; background: #ffffff; border: 3px solid #e4c1d9; 
+            color: #9070a1; font-weight: 900; font-size: 1.15rem; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .tab-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(144, 112, 161, 0.2);
-            background: #fdf0f6;
-        }
+        .tab-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(144, 112, 161, 0.2); background: #fdf0f6; }
         .tab-btn.active {
-            background: var(--accent-4002-gradient);
-            color: white;
-            border-color: transparent;
-            transform: scale(1.08) translateY(-3px);
-            box-shadow: 0 10px 25px rgba(155, 89, 182, 0.4);
+            background: var(--accent-4002-gradient); color: white; border-color: transparent;
+            transform: scale(1.08) translateY(-3px); box-shadow: 0 10px 25px rgba(155, 89, 182, 0.4);
         }
         .tab-content-container {
-            background: #ffffff;
-            border-radius: 25px;
-            padding: 50px 40px 40px 40px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            border-top: 8px solid #9b59b6;
+            background: #ffffff; border-radius: 25px; padding: 50px 40px 40px 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-top: 8px solid #9b59b6;
+            position: relative; z-index: 1; min-height: 350px; 
+        }
+        .tab-pane { display: none; animation: tabFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .tab-pane.active { display: block; }
+        @keyframes tabFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ==============================================================
+           完美更新：全頁濃縮預覽 + 隱藏工作列
+           ============================================================== */
+        .resource-card {
+            display: flex; gap: 30px; background: #fff; padding: 25px;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 3px solid #fdf0f6; align-items: stretch; margin-top: 20px;
+        }
+        .preview-section {
+            flex: 1; 
+            border-radius: 15px;
+            overflow: hidden; /* 關鍵：隱藏掉被裁切與放大的多餘部分 */
             position: relative;
-            z-index: 1;
-            min-height: 350px; 
+            border: 2px solid #e4c1d9;
+            background: #f8f9fa;
+            min-height: 420px; 
         }
-        .tab-pane {
-            display: none;
-            animation: tabFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .preview-iframe {
+            position: absolute;
+            top: -40px; /* 向上偏移以裁切掉工具列 (儲存PDF/Word區塊) */
+            left: 0;
+            width: 350%; /* 將內部網頁寬度放大 3.5 倍，以載入完整的電腦版版面 */
+            height: 500%; /* 給予充足的高度，避免內容中斷 */
+            transform: scale(0.2857); /* 精確縮小 (1/3.5)，將整頁濃縮塞進小預覽框 */
+            transform-origin: top left; /* 鎖定左上角作為縮放原點 */
+            border: none;
+            pointer-events: none; /* 將 iframe 變為純圖層，避免學生誤觸捲動 */
         }
-        .tab-pane.active {
-            display: block;
+        .action-section {
+            width: 250px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 20px; background: #fdf0f6; padding: 25px; border-radius: 15px;
         }
-        @keyframes tabFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .qr-box {
+            width: 160px; height: 160px; background: white; padding: 10px;
+            border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
+        .qr-box img { width: 100%; height: 100%; object-fit: contain; }
+        .enter-btn-large {
+            width: 100%; padding: 15px 0; background: var(--accent-4002-gradient);
+            color: white; font-size: 1.3rem; font-weight: 900; border: none;
+            border-radius: 50px; cursor: pointer; box-shadow: 0 8px 20px rgba(155, 89, 182, 0.4);
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .enter-btn-large:hover {
+            transform: translateY(-5px) scale(1.03); box-shadow: 0 12px 25px rgba(155, 89, 182, 0.6);
+        }
+        .small-actions { display: flex; flex-direction: column; width: 100%; gap: 12px; }
+        .small-btn {
+            width: 100%; padding: 12px; background: white; border: 2px solid #ceadc6;
+            color: #9070a1; border-radius: 30px; font-weight: bold; font-size: 1rem;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
+            justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box;
+        }
+        .small-btn:hover { background: #9070a1; color: white; border-color: #9070a1; }
+
+        /* --- 全螢幕互動課本 Modal --- */
+        #interactive-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #fff; z-index: 9999; flex-direction: column; animation: fadeInModal 0.3s ease forwards;
+        }
+        #interactive-modal.active { display: flex; }
+        @keyframes fadeInModal { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        .modal-header {
+            background: var(--primary-gradient); padding: 15px 30px; display: flex; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10;
+        }
+        .return-modal-btn {
+            background: white; color: #2c3e50; border: none; padding: 10px 25px; border-radius: 30px;
+            font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .return-modal-btn:hover { transform: scale(1.05); background: #f0f4f8; }
+        .modal-body { flex: 1; width: 100%; position: relative; }
+        .modal-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         @media (max-width: 850px) { 
             .toc-grid { grid-template-columns: 1fr; } 
             .intro-header-wrapper { flex-direction: column; }
             .intro-header-left h2 { font-size: 1.5rem; }
             .intro-header-right h1 { font-size: 2.2rem; }
+            
+            .resource-card { flex-direction: column; }
+            .action-section { width: 100%; flex-direction: row; flex-wrap: wrap; box-sizing: border-box;}
+            .small-actions { width: auto; flex-direction: row; flex: 1; min-width: 200px; }
+            .preview-section { min-height: 280px; }
         }
     </style>
 </head>
@@ -514,7 +557,6 @@
             </div>
         </section>
 
-        <!-- 寫作單元：課程列表 -->
         <section id="lessons-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
@@ -555,7 +597,6 @@
             </div>
         </section>
 
-        <!-- 第一課詳情面板 -->
         <section id="lesson-detail-view-1" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -600,7 +641,6 @@
             </div>
         </section>
 
-        <!-- 第二課詳情面板 -->
         <section id="lesson-detail-view-2" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -634,18 +674,104 @@
                     </div>
 
                     <div class="tab-content-container">
+                        
                         <div id="pane-2-1" class="tab-pane active">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【1. 新聞和商業新聞稿 內容放置處】</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt2-teacher-part1/" scrolling="no"></iframe>
+                                </div>
+                                
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt2-tq1.jpg" alt="QR Code 1">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt2-teacher-part1/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt2-teacher-part1/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt2-tq1.jpg" download="lt2-tq1.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div id="pane-2-2" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【2. 預期學習成果 內容放置處】</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt2-teacher-part2/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt2-tq2.jpg" alt="QR Code 2">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt2-teacher-part2/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt2-teacher-part2/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt2-tq2.jpg" download="lt2-tq2.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div id="pane-2-3" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【3. 寫作策略 內容放置處】</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt2-teacher-part3/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt2-tq3.jpg" alt="QR Code 3">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt2-teacher-part3/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt2-teacher-part3/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt2-tq3.jpg" download="lt2-tq3.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div id="pane-2-4" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【4. 寫作步驟 內容放置處】</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt2-teacher-part4/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt2-tq4.jpg" alt="QR Code 4">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt2-teacher-part4/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt2-teacher-part4/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt2-tq4.jpg" download="lt2-tq4.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div id="pane-2-5" class="tab-pane">
                             <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【5. 遊戲區 內容放置處】</h2>
                         </div>
@@ -654,7 +780,6 @@
             </div>
         </section>
 
-        <!-- 第三課詳情面板 -->
         <section id="lesson-detail-view-3" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -700,7 +825,6 @@
             </div>
         </section>
 
-        <!-- 第四課詳情面板 -->
         <section id="lesson-detail-view-4" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -753,7 +877,6 @@
             </div>
         </section>
 
-        <!-- 第五課詳情面板 -->
         <section id="lesson-detail-view-5" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -799,7 +922,6 @@
             </div>
         </section>
 
-        <!-- 第六課詳情面板 -->
         <section id="lesson-detail-view-6" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -849,7 +971,6 @@
         </section>
 
 
-        <!-- 匯報單元：課程列表 -->
         <section id="lessons-view-report" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
@@ -880,7 +1001,6 @@
             </div>
         </section>
 
-        <!-- 第七課詳情面板 -->
         <section id="lesson-detail-view-7" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -941,7 +1061,6 @@
             </div>
         </section>
 
-        <!-- 第八課詳情面板 -->
         <section id="lesson-detail-view-8" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -994,7 +1113,6 @@
             </div>
         </section>
 
-        <!-- 第九課詳情面板 -->
         <section id="lesson-detail-view-9" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1044,7 +1162,6 @@
             </div>
         </section>
 
-        <!-- 第十課詳情面板 -->
         <section id="lesson-detail-view-10" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1092,6 +1209,17 @@
 
     </main>
 
+    <div id="interactive-modal">
+        <div class="modal-header">
+            <button class="return-modal-btn" onclick="closeInteractiveModal()">
+                <i class="fa-solid fa-arrow-left"></i> 返回課程列表
+            </button>
+        </div>
+        <div class="modal-body">
+            <iframe id="modal-iframe" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <script>
         // 視圖切換
         function showView(viewId) {
@@ -1100,33 +1228,37 @@
             window.scrollTo(0, 0);
         }
 
-        // ==========================================
         // 課程內文標籤頁 (Tabs) 切換邏輯
-        // ==========================================
         function switchLessonTab(paneId, btnElement) {
-            // 找到當前所在的 lesson 容器
             const container = btnElement.closest('.lesson-tabs-container');
-            
-            // 1. 隱藏該容器內的所有內容面板
             container.querySelectorAll('.tab-pane').forEach(pane => {
                 pane.classList.remove('active');
             });
-            
-            // 2. 移除該容器內所有按鈕的 active 狀態
             container.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
-            // 3. 顯示被點擊的內容面板
             document.getElementById(paneId).classList.add('active');
-            
-            // 4. 將被點擊的按鈕加上 active 狀態
             btnElement.classList.add('active');
-            
-            // 5. 將畫面平滑滾動到標籤區塊，確保學生切換時從頭看起
             if(container) {
                 container.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+        }
+
+        // 全螢幕互動課本 (Modal)
+        function openInteractiveModal(url) {
+            const modal = document.getElementById('interactive-modal');
+            const iframe = document.getElementById('modal-iframe');
+            iframe.src = url;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeInteractiveModal() {
+            const modal = document.getElementById('interactive-modal');
+            const iframe = document.getElementById('modal-iframe');
+            modal.classList.remove('active');
+            iframe.src = ''; 
+            document.body.style.overflow = 'auto'; 
         }
     </script>
 </body>
