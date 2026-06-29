@@ -60,6 +60,7 @@
         }
         .course-book:hover { transform: translateY(-15px) rotateY(-5deg); box-shadow: 25px 30px 50px rgba(0,0,0,0.3); }
         .book-title { font-size: 2rem; font-weight: 900; line-height: 1.3; color: #444; }
+        .book-subtitle { font-size: 0.95rem; font-weight: bold; color: var(--accent-4002-start); margin-top: 5px; letter-spacing: 1px; }
         
         .book-cover-img-container {
             width: 100%; height: 250px; margin: 20px 0;
@@ -239,7 +240,7 @@
         @keyframes tabFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ==============================================================
-           完美更新：全頁濃縮預覽 + 隱藏工作列
+           互動模塊：全頁濃縮預覽 + 隱藏工作列
            ============================================================== */
         .resource-card {
             display: flex; gap: 30px; background: #fff; padding: 25px;
@@ -249,7 +250,7 @@
         .preview-section {
             flex: 1; 
             border-radius: 15px;
-            overflow: hidden; /* 關鍵：隱藏掉被裁切與放大的多餘部分 */
+            overflow: hidden;
             position: relative;
             border: 2px solid #e4c1d9;
             background: #f8f9fa;
@@ -257,14 +258,14 @@
         }
         .preview-iframe {
             position: absolute;
-            top: -40px; /* 向上偏移以裁切掉工具列 (儲存PDF/Word區塊) */
+            top: -40px;
             left: 0;
-            width: 350%; /* 將內部網頁寬度放大 3.5 倍，以載入完整的電腦版版面 */
-            height: 500%; /* 給予充足的高度，避免內容中斷 */
-            transform: scale(0.2857); /* 精確縮小 (1/3.5)，將整頁濃縮塞進小預覽框 */
-            transform-origin: top left; /* 鎖定左上角作為縮放原點 */
+            width: 350%;
+            height: 500%;
+            transform: scale(0.2857);
+            transform-origin: top left;
             border: none;
-            pointer-events: none; /* 將 iframe 變為純圖層，避免學生誤觸捲動 */
+            pointer-events: none;
         }
         .action-section {
             width: 250px; display: flex; flex-direction: column; align-items: center;
@@ -339,6 +340,7 @@
     </header>
 
     <main>
+        <!-- 封面區塊 -->
         <section id="library-view" class="view-section active">
             <div class="library-container">
                 <div class="course-book" onclick="showView('toc-view')">
@@ -347,6 +349,7 @@
                         <img src="P1.jpg" alt="職業中文推介文書封面圖" class="book-cover-img">
                     </div>
                     <div class="book-main-topic">普通話報告與<br>推介文書</div>
+                    <div class="book-subtitle">教師版</div>
                     <div class="book-footer">
                         <p class="book-code-dark">LAN4002</p>
                         <div class="book-icons">
@@ -362,6 +365,7 @@
             <p style="text-align:center; color:#636e72; font-weight: bold;">👉 點擊書本展開目錄</p>
         </section>
 
+        <!-- 目錄與選單區塊 -->
         <section id="toc-view" class="view-section">
             <div class="toc-container">
                 <button class="back-btn" onclick="showView('library-view')">⬅ 返回書櫃</button>
@@ -450,6 +454,7 @@
             </div>
         </section>
 
+        <!-- 單元介紹區塊 -->
         <section id="intro-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('shelf-view')">⬅ 返回單元選擇</button>
@@ -557,6 +562,7 @@
             </div>
         </section>
 
+        <!-- 寫作單元：課程列表 -->
         <section id="lessons-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
@@ -597,6 +603,7 @@
             </div>
         </section>
 
+        <!-- 第一課 -->
         <section id="lesson-detail-view-1" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -641,6 +648,7 @@
             </div>
         </section>
 
+        <!-- 第二課 (已更新：全縮放預覽圖及隱藏工作列) -->
         <section id="lesson-detail-view-2" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -675,6 +683,7 @@
 
                     <div class="tab-content-container">
                         
+                        <!-- 標籤 1：新聞和商業新聞稿 -->
                         <div id="pane-2-1" class="tab-pane active">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -700,6 +709,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 2：預期學習成果 -->
                         <div id="pane-2-2" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -724,6 +734,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 3：寫作策略 -->
                         <div id="pane-2-3" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -748,6 +759,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 4：寫作步驟 -->
                         <div id="pane-2-4" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -772,6 +784,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 5：遊戲區 -->
                         <div id="pane-2-5" class="tab-pane">
                             <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">【5. 遊戲區 內容放置處】</h2>
                         </div>
@@ -780,6 +793,7 @@
             </div>
         </section>
 
+        <!-- 第三課詳情面板 -->
         <section id="lesson-detail-view-3" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -825,6 +839,7 @@
             </div>
         </section>
 
+        <!-- 第四課詳情面板 -->
         <section id="lesson-detail-view-4" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -877,6 +892,7 @@
             </div>
         </section>
 
+        <!-- 第五課詳情面板 -->
         <section id="lesson-detail-view-5" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -922,6 +938,7 @@
             </div>
         </section>
 
+        <!-- 第六課詳情面板 -->
         <section id="lesson-detail-view-6" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -971,6 +988,7 @@
         </section>
 
 
+        <!-- 匯報單元：課程列表 -->
         <section id="lessons-view-report" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
@@ -1001,6 +1019,7 @@
             </div>
         </section>
 
+        <!-- 第七課詳情面板 -->
         <section id="lesson-detail-view-7" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1061,6 +1080,7 @@
             </div>
         </section>
 
+        <!-- 第八課詳情面板 -->
         <section id="lesson-detail-view-8" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1113,6 +1133,7 @@
             </div>
         </section>
 
+        <!-- 第九課詳情面板 -->
         <section id="lesson-detail-view-9" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1162,6 +1183,7 @@
             </div>
         </section>
 
+        <!-- 第十課詳情面板 -->
         <section id="lesson-detail-view-10" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1209,6 +1231,7 @@
 
     </main>
 
+    <!-- Modal -->
     <div id="interactive-modal">
         <div class="modal-header">
             <button class="return-modal-btn" onclick="closeInteractiveModal()">
