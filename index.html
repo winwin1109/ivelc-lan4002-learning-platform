@@ -357,6 +357,7 @@
     </header>
 
     <main>
+        <!-- 封面區塊 -->
         <section id="library-view" class="view-section active">
             <div class="library-container">
                 <div class="course-book" onclick="showView('toc-view')">
@@ -381,6 +382,7 @@
             <p style="text-align:center; color:#636e72; font-weight: bold;">👉 點擊書本展開目錄</p>
         </section>
 
+        <!-- 目錄與選單區塊 (已升級為互動按鍵版) -->
         <section id="toc-view" class="view-section">
             <div class="toc-container">
                 <button class="back-btn" onclick="showView('library-view')">⬅ 返回書櫃</button>
@@ -455,6 +457,7 @@
             </div>
         </section>
 
+        <!-- 單元介紹區塊 -->
         <section id="intro-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('toc-view')">⬅ 返回目錄</button>
@@ -562,6 +565,7 @@
             </div>
         </section>
 
+        <!-- 寫作單元：課程列表 -->
         <section id="lessons-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
@@ -602,6 +606,7 @@
             </div>
         </section>
 
+        <!-- 第一課 -->
         <section id="lesson-detail-view-1" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -646,6 +651,7 @@
             </div>
         </section>
 
+        <!-- 第二課 -->
         <section id="lesson-detail-view-2" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -675,11 +681,12 @@
                         <button class="tab-btn" onclick="switchLessonTab('pane-2-2', this)">2. 預期學習成果</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-2-3', this)">3. 寫作策略</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-2-4', this)">4. 寫作步驟</button>
-                        <button class="tab-btn" onclick="switchLessonTab('pane-2-5', this)">5. 遊戲區</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-2-5', this)">5. 練習區</button>
                     </div>
 
                     <div class="tab-content-container">
                         
+                        <!-- 標籤 1：新聞和商業新聞稿 -->
                         <div id="pane-2-1" class="tab-pane active">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -705,6 +712,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 2：預期學習成果 -->
                         <div id="pane-2-2" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -729,6 +737,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 3：寫作策略 -->
                         <div id="pane-2-3" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -753,6 +762,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 4：寫作步驟 -->
                         <div id="pane-2-4" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -777,6 +787,7 @@
                             </div>
                         </div>
                         
+                        <!-- 標籤 5：練習區 -->
                         <div id="pane-2-5" class="tab-pane">
                             <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
                         </div>
@@ -785,6 +796,7 @@
             </div>
         </section>
 
+        <!-- 第三課詳情面板 -->
         <section id="lesson-detail-view-3" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -830,6 +842,7 @@
             </div>
         </section>
 
+        <!-- 第四課詳情面板 -->
         <section id="lesson-detail-view-4" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -859,7 +872,7 @@
                         <button class="tab-btn" onclick="switchLessonTab('pane-4-2', this)">2. 預期學習成果</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-4-3', this)">3. 寫作策略</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-4-4', this)">4. 寫作步驟</button>
-                        <button class="tab-btn" onclick="switchLessonTab('pane-4-5', this)">5. 遊戲區</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-4-5', this)">5. 練習區</button>
                     </div>
                     <div class="tab-content-container">
                         <div id="pane-4-1" class="tab-pane active">
@@ -882,6 +895,7 @@
             </div>
         </section>
 
+        <!-- 第五課詳情面板 -->
         <section id="lesson-detail-view-5" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -927,6 +941,7 @@
             </div>
         </section>
 
+        <!-- 第六課詳情面板 -->
         <section id="lesson-detail-view-6" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -976,6 +991,7 @@
         </section>
 
 
+        <!-- 匯報單元：課程列表 -->
         <section id="lessons-view-report" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
@@ -1006,6 +1022,7 @@
             </div>
         </section>
 
+        <!-- 第七課詳情面板 -->
         <section id="lesson-detail-view-7" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1046,7 +1063,7 @@
                         <button class="tab-btn active" onclick="switchLessonTab('pane-7-1', this)">1. 語言功能介紹-說服</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-7-2', this)">2. 預期學習成果</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-7-3', this)">3. 蒐集資料的方法</button>
-                        <button class="tab-btn" onclick="switchLessonTab('pane-7-4', this)">4. 遊戲區</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-7-4', this)">4. 練習區</button>
                     </div>
                     <div class="tab-content-container">
                         <div id="pane-7-1" class="tab-pane active">
@@ -1066,6 +1083,7 @@
             </div>
         </section>
 
+        <!-- 第八課詳情面板 -->
         <section id="lesson-detail-view-8" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1095,7 +1113,7 @@
                         <button class="tab-btn" onclick="switchLessonTab('pane-8-2', this)">2. 論據</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-8-3', this)">3. 論證方法</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-8-4', this)">4. 小組研習</button>
-                        <button class="tab-btn" onclick="switchLessonTab('pane-8-5', this)">5. 遊戲區</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-8-5', this)">5. 練習區</button>
                     </div>
                     <div class="tab-content-container">
                         <div id="pane-8-1" class="tab-pane active">
@@ -1118,6 +1136,7 @@
             </div>
         </section>
 
+        <!-- 第九課詳情面板 -->
         <section id="lesson-detail-view-9" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1167,6 +1186,7 @@
             </div>
         </section>
 
+        <!-- 第十課詳情面板 -->
         <section id="lesson-detail-view-10" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1214,6 +1234,7 @@
 
     </main>
 
+    <!-- Modal -->
     <div id="interactive-modal">
         <div class="modal-header">
             <button class="return-modal-btn" onclick="closeInteractiveModal()">
