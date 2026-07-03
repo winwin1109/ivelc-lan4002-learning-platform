@@ -273,6 +273,8 @@
             background: #f8f9fa;
             min-height: 420px; 
         }
+        
+        /* 預設濃縮全頁樣式 */
         .preview-iframe {
             position: absolute;
             top: -40px;
@@ -284,6 +286,18 @@
             border: none;
             pointer-events: none;
         }
+
+        /* 專為指定預覽圖「放大並填滿」設計的樣式 (修復置中偏左問題) */
+        .iframe-enlarge-fill {
+            width: 140% !important;
+            height: 250% !important; 
+            left: 0 !important;
+            /* 由於畫面放大了，所以隱藏工作列所需的位移(top)也要跟著等比例增加 */
+            top: -100px !important; 
+            transform: scale(0.714) !important; /* 將 1.4 倍的寬度精準縮放回 100% 填滿視窗 */
+            transform-origin: top left !important;
+        }
+
         .action-section {
             width: 250px; display: flex; flex-direction: column; align-items: center;
             justify-content: center; gap: 20px; background: #fdf0f6; padding: 25px; border-radius: 15px;
@@ -357,7 +371,6 @@
     </header>
 
     <main>
-        <!-- 封面區塊 -->
         <section id="library-view" class="view-section active">
             <div class="library-container">
                 <div class="course-book" onclick="showView('toc-view')">
@@ -382,7 +395,6 @@
             <p style="text-align:center; color:#636e72; font-weight: bold;">👉 點擊書本展開目錄</p>
         </section>
 
-        <!-- 目錄與選單區塊 (已升級為互動按鍵版) -->
         <section id="toc-view" class="view-section">
             <div class="toc-container">
                 <button class="back-btn" onclick="showView('library-view')">⬅ 返回書櫃</button>
@@ -457,7 +469,6 @@
             </div>
         </section>
 
-        <!-- 單元介紹區塊 -->
         <section id="intro-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('toc-view')">⬅ 返回目錄</button>
@@ -565,7 +576,6 @@
             </div>
         </section>
 
-        <!-- 寫作單元：課程列表 -->
         <section id="lessons-view-writing" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-writing')">⬅ 返回寫作單元介紹</button>
@@ -606,7 +616,6 @@
             </div>
         </section>
 
-        <!-- 第一課 -->
         <section id="lesson-detail-view-1" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -637,21 +646,84 @@
                         <button class="tab-btn" onclick="switchLessonTab('pane-1-3', this)">3. 綜合練習</button>
                     </div>
                     <div class="tab-content-container">
+                        
                         <div id="pane-1-1" class="tab-pane active">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe iframe-enlarge-fill" src="https://winwin1109.github.io/4002-lt1-teacher-part1/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt1-tq1.jpg" alt="QR Code 1">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt1-teacher-part1/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt1-teacher-part1/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt1-tq1.jpg" download="lt1-tq1.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div id="pane-1-2" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe iframe-enlarge-fill" src="https://winwin1109.github.io/4002-lt1-teacher-part2/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt1-tq2.jpg" alt="QR Code 2">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt1-teacher-part2/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt1-teacher-part2/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt1-tq2.jpg" download="lt1-tq2.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div id="pane-1-3" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt1-teacher-part3/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt1-tq3.jpg" alt="QR Code 3">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt1-teacher-part3/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt1-teacher-part3/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt1-tq3.jpg" download="lt1-tq3.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 第二課 -->
         <section id="lesson-detail-view-2" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -686,7 +758,6 @@
 
                     <div class="tab-content-container">
                         
-                        <!-- 標籤 1：新聞和商業新聞稿 -->
                         <div id="pane-2-1" class="tab-pane active">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -712,7 +783,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 2：預期學習成果 -->
                         <div id="pane-2-2" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -737,7 +807,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 3：寫作策略 -->
                         <div id="pane-2-3" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -762,7 +831,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 4：寫作步驟 -->
                         <div id="pane-2-4" class="tab-pane">
                             <div class="resource-card">
                                 <div class="preview-section">
@@ -787,7 +855,6 @@
                             </div>
                         </div>
                         
-                        <!-- 標籤 5：練習區 -->
                         <div id="pane-2-5" class="tab-pane">
                             <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
                         </div>
@@ -796,7 +863,6 @@
             </div>
         </section>
 
-        <!-- 第三課詳情面板 -->
         <section id="lesson-detail-view-3" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -842,7 +908,6 @@
             </div>
         </section>
 
-        <!-- 第四課詳情面板 -->
         <section id="lesson-detail-view-4" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -895,7 +960,6 @@
             </div>
         </section>
 
-        <!-- 第五課詳情面板 -->
         <section id="lesson-detail-view-5" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -941,7 +1005,6 @@
             </div>
         </section>
 
-        <!-- 第六課詳情面板 -->
         <section id="lesson-detail-view-6" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -991,7 +1054,6 @@
         </section>
 
 
-        <!-- 匯報單元：課程列表 -->
         <section id="lessons-view-report" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('intro-view-report')">⬅ 返回匯報單元介紹</button>
@@ -1022,7 +1084,6 @@
             </div>
         </section>
 
-        <!-- 第七課詳情面板 -->
         <section id="lesson-detail-view-7" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1083,7 +1144,6 @@
             </div>
         </section>
 
-        <!-- 第八課詳情面板 -->
         <section id="lesson-detail-view-8" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1136,7 +1196,6 @@
             </div>
         </section>
 
-        <!-- 第九課詳情面板 -->
         <section id="lesson-detail-view-9" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1186,7 +1245,6 @@
             </div>
         </section>
 
-        <!-- 第十課詳情面板 -->
         <section id="lesson-detail-view-10" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-report')">⬅ 返回匯報單元課程列表</button>
@@ -1234,7 +1292,6 @@
 
     </main>
 
-    <!-- Modal -->
     <div id="interactive-modal">
         <div class="modal-header">
             <button class="return-modal-btn" onclick="closeInteractiveModal()">
