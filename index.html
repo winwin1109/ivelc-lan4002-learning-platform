@@ -27,6 +27,9 @@
             --border-radius-md: 15px;
         }
 
+        /* 確保所有元素在縮放時不超出寬度 */
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
             font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
             background-color: var(--bg-color);
@@ -50,7 +53,7 @@
         /* --- 1. 封面設計 --- */
         .library-container { display: flex; justify-content: center; padding: 40px; }
         .course-book {
-            width: 360px; min-height: 540px; background: white;
+            width: 100%; max-width: 360px; min-height: 540px; background: white;
             border-radius: 5px 25px 25px 5px;
             box-shadow: 15px 15px 35px rgba(0,0,0,0.2);
             cursor: pointer; transition: 0.4s;
@@ -80,11 +83,11 @@
         .book-code-dark { font-size: 1.2rem; color: #2d3436; font-weight: bold; margin: 0; }
         .book-icons { display: flex; gap: 10px; margin-top: 8px; color: #636e72; font-size: 1rem; }
 
-        /* --- 2. 專業目錄設計 (已升級為按鍵) --- */
+        /* --- 2. 專業目錄設計 --- */
         .toc-container, .content-container {
-            max-width: 950px; margin: 0 auto; background: white;
+            width: 100%; max-width: 950px; margin: 0 auto; background: white;
             padding: 50px; border-radius: var(--border-radius-lg);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); box-sizing: border-box;
         }
         .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
         .toc-unit { background: #f8f9fa; padding: 25px; border-radius: 20px; border-top: 6px solid var(--accent-4002-start); }
@@ -93,36 +96,27 @@
         .toc-sub li { margin-bottom: 5px; position: relative; }
         .toc-sub li::before { content: "•"; color: var(--accent-4002-end); position: absolute; left: -12px; }
 
-        /* 互動式單元大標題按鍵 */
         .unit-title-link {
             cursor: pointer; color: white; background: var(--accent-4002-gradient); 
             padding: 10px 20px; border-radius: 30px; display: inline-flex; align-items: center; 
             gap: 10px; font-size: 1.2rem; font-weight: 900; transition: 0.3s; 
             box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3); border: none; margin-bottom: 10px;
         }
-        .unit-title-link:hover {
-            transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 20px rgba(155, 89, 182, 0.5);
-        }
+        .unit-title-link:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 20px rgba(155, 89, 182, 0.5); }
 
-        /* 互動式各課小標題按鍵 */
         .toc-lesson-title.clickable {
             cursor: pointer; transition: 0.3s; padding: 10px 15px; border-radius: 12px; 
-            background: #fff; border: 2px solid transparent; display: flex; align-items: center; 
+            background: #fff; border: 2px solid transparent; display: flex; align-items: flex-start; 
             justify-content: space-between; color: #2d3436; font-weight: 900; margin-bottom: 8px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.04); width: 100%; box-sizing: border-box;
             font-size: 1.05rem;
         }
         .toc-lesson-title.clickable::after {
-            content: "\f061"; /* FontAwesome 箭頭 */
-            font-family: "Font Awesome 6 Free"; font-weight: 900; opacity: 0.5; transform: translateX(-5px); 
-            transition: 0.3s; color: var(--accent-4002-start); font-size: 0.9rem;
+            content: "\f061"; font-family: "Font Awesome 6 Free"; font-weight: 900; opacity: 0.5; transform: translateX(-5px); 
+            transition: 0.3s; color: var(--accent-4002-start); font-size: 0.9rem; margin-top: 2px;
         }
-        .toc-lesson-title.clickable:hover {
-            background: #fdf0f6; border-color: #e4c1d9; color: var(--accent-4002-start); transform: translateX(5px);
-        }
-        .toc-lesson-title.clickable:hover::after {
-            opacity: 1; transform: translateX(0);
-        }
+        .toc-lesson-title.clickable:hover { background: #fdf0f6; border-color: #e4c1d9; color: var(--accent-4002-start); transform: translateX(5px); }
+        .toc-lesson-title.clickable:hover::after { opacity: 1; transform: translateX(0); }
 
         .back-btn {
             padding: 10px 25px; background: #b2bec3; color: white; border: none;
@@ -136,7 +130,7 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
         .intro-header-left { padding: 30px 40px; display: flex; align-items: center; justify-content: center; }
-        .intro-header-left h2 { color: white; border-top: 3px solid white; border-bottom: 3px solid white; padding: 10px 0; margin: 0; font-size: 2rem; letter-spacing: 2px; }
+        .intro-header-left h2 { color: white; border-top: 3px solid white; border-bottom: 3px solid white; padding: 10px 0; margin: 0; font-size: 2rem; letter-spacing: 2px; text-align: center; }
         .intro-header-right { padding: 30px 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
         .intro-header-right h1 { margin: 0; font-size: 3rem; color: #111; letter-spacing: 2px;}
         .intro-header-right p { margin: 5px 0 0; font-size: 1.2rem; color: #333; font-weight: bold; }
@@ -152,10 +146,11 @@
         .intro-list li::before { content: "▶"; position: absolute; left: -25px; color: #f1c40f; font-size: 1.2rem; }
 
         .enter-btn {
-            display: block; width: 280px; margin: 40px auto 0; padding: 15px;
+            display: block; width: 100%; max-width: 280px; margin: 40px auto 0; padding: 15px;
             background: var(--accent-4002-gradient); color: white; text-align: center;
             text-decoration: none; border-radius: 50px; font-weight: 900; font-size: 1.2rem;
             box-shadow: 0 8px 20px rgba(236, 64, 122, 0.3); transition: 0.3s; border: none; cursor: pointer;
+            box-sizing: border-box;
         }
         .enter-btn:hover { transform: scale(1.05); box-shadow: 0 12px 25px rgba(236, 64, 122, 0.4); }
 
@@ -165,61 +160,39 @@
             margin-top: 30px; padding: 35px 20px; 
             background: #ffffff; border-radius: 20px; 
             box-shadow: inset 0 0 20px rgba(0,0,0,0.02), 0 8px 25px rgba(0,0,0,0.04); 
-            border: 2px dashed #dcdde1;
-            counter-reset: flow-step; 
+            border: 2px dashed #dcdde1; counter-reset: flow-step; 
         }
         .flow-node { 
             position: relative; padding: 12px 25px 12px 48px; 
             border-radius: 50px; font-weight: 900; font-size: 1.1rem; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; text-align: center;
         }
-        .flow-node:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-        }
+        .flow-node:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
         .flow-node::before {
-            counter-increment: flow-step;
-            content: counter(flow-step);
+            counter-increment: flow-step; content: counter(flow-step);
             position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
-            width: 28px; height: 28px;
-            background: rgba(0, 0, 0, 0.15); 
+            width: 28px; height: 28px; background: rgba(0, 0, 0, 0.15); 
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
             font-size: 0.95rem; font-weight: 900; color: inherit; 
         }
-        .flow-arrow { 
-            color: #b2bec3; font-size: 1.4rem; 
-            animation: pulseArrow 1.5s infinite alternate ease-in-out;
-        }
-        @keyframes pulseArrow {
-            from { transform: translateX(-3px); opacity: 0.6; }
-            to { transform: translateX(3px); opacity: 1; color: #74b9ff; }
-        }
+        .flow-arrow { color: #b2bec3; font-size: 1.4rem; animation: pulseArrow 1.5s infinite alternate ease-in-out; }
+        @keyframes pulseArrow { from { transform: translateX(-3px); opacity: 0.6; } to { transform: translateX(3px); opacity: 1; color: #74b9ff; } }
 
         /* --- 5. 互動學習資源 (書本櫃) --- */
         .lessons-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; padding: 20px 0; }
         .lesson-book {
-            width: 190px; height: 300px; background: white; 
-            border-radius: 5px 15px 15px 5px;
-            box-shadow: 5px 8px 15px rgba(0,0,0,0.1);
-            padding: 20px 15px; display: flex; flex-direction: column;
-            cursor: pointer; transition: 0.3s; position: relative;
-            z-index: 1; 
+            width: 100%; max-width: 190px; height: auto; min-height: 300px; background: white; 
+            border-radius: 5px 15px 15px 5px; box-shadow: 5px 8px 15px rgba(0,0,0,0.1);
+            padding: 20px 15px; display: flex; flex-direction: column; box-sizing: border-box;
+            cursor: pointer; transition: 0.3s; position: relative; z-index: 1; 
         }
         .lesson-book:hover { transform: translateY(-10px); box-shadow: 10px 15px 25px rgba(0,0,0,0.15); }
         
-        .lb-cover-img {
-            width: 100%; height: 130px; object-fit: cover;
-            margin-bottom: 15px;
-            filter: url(#paint-edge) drop-shadow(2px 3px 4px rgba(0,0,0,0.1));
-            border: none;
-            border-radius: 0;
-        }
+        .lb-cover-img { width: 100%; height: 130px; object-fit: cover; margin-bottom: 15px; filter: url(#paint-edge) drop-shadow(2px 3px 4px rgba(0,0,0,0.1)); border: none; border-radius: 0; }
         .lb-num { font-size: 0.95rem; font-weight: bold; color: #7f8c8d; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; margin-bottom: 10px; }
         .lb-title { font-size: 1.15rem; font-weight: 900; color: #2c3e50; line-height: 1.4; }
 
-        /* 每課專屬清新漸變背景樣式 */
         .lb-grade-1 { background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%); } 
         .lb-grade-2 { background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%); } 
         .lb-grade-3 { background: linear-gradient(135deg, #fffde7 0%, #ffffff 100%); } 
@@ -265,62 +238,36 @@
             border: 3px solid #fdf0f6; align-items: stretch; margin-top: 20px;
         }
         .preview-section {
-            flex: 1; 
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            border: 2px solid #e4c1d9;
-            background: #f8f9fa;
-            min-height: 420px; 
+            flex: 1; border-radius: 15px; overflow: hidden; position: relative;
+            border: 2px solid #e4c1d9; background: #f8f9fa; min-height: 420px; 
         }
         
-        /* 預設濃縮全頁樣式 */
         .preview-iframe {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            width: 350%;
-            height: 500%;
-            transform: scale(0.2857);
-            transform-origin: top left;
-            border: none;
-            pointer-events: none;
+            position: absolute; top: -40px; left: 0; width: 350%; height: 500%;
+            transform: scale(0.2857); transform-origin: top left; border: none; pointer-events: none;
         }
 
-        /* 專為指定預覽圖「放大並填滿」設計的樣式 (修復置中偏左問題) */
         .iframe-enlarge-fill {
-            width: 140% !important;
-            height: 250% !important; 
-            left: 0 !important;
-            /* 由於畫面放大了，所以隱藏工作列所需的位移(top)也要跟著等比例增加 */
-            top: -100px !important; 
-            transform: scale(0.714) !important; /* 將 1.4 倍的寬度精準縮放回 100% 填滿視窗 */
-            transform-origin: top left !important;
+            width: 140% !important; height: 250% !important; left: 0 !important;
+            top: -100px !important; transform: scale(0.714) !important; transform-origin: top left !important;
         }
 
         .action-section {
             width: 250px; display: flex; flex-direction: column; align-items: center;
             justify-content: center; gap: 20px; background: #fdf0f6; padding: 25px; border-radius: 15px;
         }
-        .qr-box {
-            width: 160px; height: 160px; background: white; padding: 10px;
-            border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
+        .qr-box { width: 160px; height: 160px; background: white; padding: 10px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
         .qr-box img { width: 100%; height: 100%; object-fit: contain; }
         .enter-btn-large {
-            width: 100%; padding: 15px 0; background: var(--accent-4002-gradient);
-            color: white; font-size: 1.3rem; font-weight: 900; border: none;
-            border-radius: 50px; cursor: pointer; box-shadow: 0 8px 20px rgba(155, 89, 182, 0.4);
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 15px 0; background: var(--accent-4002-gradient); color: white; font-size: 1.3rem; 
+            font-weight: 900; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 8px 20px rgba(155, 89, 182, 0.4);
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; box-sizing: border-box;
         }
-        .enter-btn-large:hover {
-            transform: translateY(-5px) scale(1.03); box-shadow: 0 12px 25px rgba(155, 89, 182, 0.6);
-        }
+        .enter-btn-large:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 12px 25px rgba(155, 89, 182, 0.6); }
         .small-actions { display: flex; flex-direction: column; width: 100%; gap: 12px; }
         .small-btn {
-            width: 100%; padding: 12px; background: white; border: 2px solid #ceadc6;
-            color: #9070a1; border-radius: 30px; font-weight: bold; font-size: 1rem;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
+            width: 100%; padding: 12px; background: white; border: 2px solid #ceadc6; color: #9070a1; border-radius: 30px; 
+            font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center;
             justify-content: center; gap: 8px; text-decoration: none; box-sizing: border-box;
         }
         .small-btn:hover { background: #9070a1; color: white; border-color: #9070a1; }
@@ -332,9 +279,7 @@
         }
         #interactive-modal.active { display: flex; }
         @keyframes fadeInModal { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        .modal-header {
-            background: var(--primary-gradient); padding: 15px 30px; display: flex; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10;
-        }
+        .modal-header { background: var(--primary-gradient); padding: 15px 30px; display: flex; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10; }
         .return-modal-btn {
             background: white; color: #2c3e50; border: none; padding: 10px 25px; border-radius: 30px;
             font-weight: 900; cursor: pointer; font-size: 1.1rem; transition: 0.3s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -343,16 +288,55 @@
         .modal-body { flex: 1; width: 100%; position: relative; }
         .modal-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
+        /* ==============================================================
+           完美手機版適配 (RWD 響應式設計)，不改變任何設計元素，僅調整縮放排版
+           ============================================================== */
         @media (max-width: 850px) { 
-            .toc-grid { grid-template-columns: 1fr; } 
-            .intro-header-wrapper { flex-direction: column; }
-            .intro-header-left h2 { font-size: 1.5rem; }
-            .intro-header-right h1 { font-size: 2.2rem; }
+            body { padding: 10px; }
+            header { padding: 20px 15px; margin-bottom: 25px; }
+            header h1 { font-size: 1.6rem; line-height: 1.4; margin: 0; }
             
-            .resource-card { flex-direction: column; }
-            .action-section { width: 100%; flex-direction: row; flex-wrap: wrap; box-sizing: border-box;}
-            .small-actions { width: auto; flex-direction: row; flex: 1; min-width: 200px; }
-            .preview-section { min-height: 280px; }
+            .library-container { padding: 20px 10px; }
+            .course-book { padding: 30px 20px; }
+            .book-title { font-size: 1.8rem; }
+            .book-main-topic { font-size: 1.6rem; }
+            
+            .toc-container, .content-container { padding: 25px 20px; border-radius: 20px; }
+            .toc-grid { grid-template-columns: 1fr; gap: 25px; margin-top: 20px; }
+            .toc-unit { padding: 20px 15px; border-radius: 15px; }
+            .toc-lesson-title.clickable { font-size: 1rem; padding: 12px; }
+            
+            .intro-header-wrapper { flex-direction: column; margin-bottom: 25px; border-radius: 15px; }
+            .intro-header-left, .intro-header-right { padding: 20px; text-align: center; }
+            .intro-header-left h2 { font-size: 1.5rem; }
+            .intro-header-right h1 { font-size: 2rem; }
+            .intro-header-right p { font-size: 1rem; }
+            .intro-header-right .code { text-align: center; margin-top: 10px; }
+            
+            .intro-section-block { padding: 0; }
+            .intro-heading .large-num { font-size: 3rem; margin-right: 10px; }
+            .intro-heading h3 { font-size: 1.5rem; }
+            
+            .lessons-grid { gap: 15px; }
+            .lesson-book { width: calc(50% - 10px); padding: 15px 10px; min-height: 240px; }
+            .lb-title { font-size: 1rem; }
+            .lb-cover-img { height: 100px; margin-bottom: 10px; }
+            
+            /* 手機版標籤分頁改為直列大按鍵，方便點擊 */
+            .lesson-tabs { flex-direction: column; gap: 10px; margin-bottom: 15px; }
+            .tab-btn { width: 100%; border-radius: 15px; padding: 12px 20px; }
+            .tab-content-container { padding: 25px 15px; border-top: none; border-left: 6px solid #9b59b6; margin-top: 0; border-radius: 15px;}
+            
+            /* 手機版互動模塊排版改為上下層疊，避免擁擠 */
+            .resource-card { flex-direction: column; padding: 15px; gap: 20px; border-radius: 15px; }
+            .preview-section { min-height: 300px; width: 100%; border-radius: 12px; }
+            .action-section { width: 100%; flex-direction: column; padding: 20px; box-sizing: border-box; border-radius: 12px; }
+            .qr-box { width: 140px; height: 140px; }
+            .enter-btn-large { font-size: 1.1rem; padding: 12px 0; }
+            .small-actions { width: 100%; flex-direction: column; }
+            
+            .modal-header { padding: 10px 15px; }
+            .return-modal-btn { width: 100%; justify-content: center; font-size: 1rem; padding: 10px; }
         }
     </style>
 </head>
@@ -633,7 +617,7 @@
                     </h3>
                     <p style="color: #555; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold;">完成本課後，你可以：</p>
                     <ol style="color: #444; line-height: 1.8; font-size: 1.1rem; padding-left: 25px; margin-bottom: 0;">
-                        <li>認識宣推推介文書</li>
+                        <li>認識宣傳推介文書</li>
                         <li>掌握宣傳策略</li>
                         <li>掌握建構宣傳內容的步驟及策略</li>
                     </ol>
@@ -1368,14 +1352,12 @@
     </div>
 
     <script>
-        // 視圖切換
         function showView(viewId) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        // 課程內文標籤頁 (Tabs) 切換邏輯
         function switchLessonTab(paneId, btnElement) {
             const container = btnElement.closest('.lesson-tabs-container');
             container.querySelectorAll('.tab-pane').forEach(pane => {
@@ -1391,7 +1373,6 @@
             }
         }
 
-        // 全螢幕互動課本 (Modal)
         function openInteractiveModal(url) {
             const modal = document.getElementById('interactive-modal');
             const iframe = document.getElementById('modal-iframe');
