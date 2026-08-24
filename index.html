@@ -8,7 +8,7 @@
     <!-- PWA (Web App) 設定開始 -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#9b59b6">
-    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- PWA (Web App) 設定結束 -->
@@ -364,6 +364,10 @@
 
     <header>
         <h1>職業中文傳意—電子教學平台</h1>
+        <!-- 新增這個安裝按鈕 -->
+        <button id="installAppBtn" style="display: none; margin: 15px auto 0; padding: 10px 20px; background: white; color: #9b59b6; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            <i class="fa-solid fa-download"></i> 下載安裝為電腦/手機 App
+        </button>
     </header>
 
     <main>
@@ -1632,6 +1636,45 @@
                 });
             });
         }
+
+        // ==========================================
+        // PWA 手動安裝按鈕邏輯
+        // ==========================================
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
+
+        // 監聽瀏覽器是否準備好觸發安裝
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // 防止瀏覽器預設的迷你提示列出現 (特別是手機端)
+            e.preventDefault();
+            // 儲存事件，以便稍後觸發
+            deferredPrompt = e;
+            // 顯示我們自訂的安裝按鈕
+            installBtn.style.display = 'block';
+        });
+
+        // 當使用者點擊按鈕時
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // 顯示安裝提示視窗
+                deferredPrompt.prompt();
+                // 等待使用者回應 (接受或拒絕)
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('使用者同意安裝 APP');
+                    // 安裝後隱藏按鈕
+                    installBtn.style.display = 'none';
+                }
+                // 清除 prompt，因為它只能被呼叫一次
+                deferredPrompt = null;
+            }
+        });
+
+        // 監聽是否已經成功安裝，安裝完成後隱藏按鈕
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            console.log('APP 已成功安裝');
+        });
     </script>
 </body>
 </html>
