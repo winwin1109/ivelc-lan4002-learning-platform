@@ -1,0 +1,16 @@
+{
+  "name": "4002教師版",
+  "short_name": "4002教師版",
+  "description": "職業中文傳意—電子教學平台 (LAN4002)",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#9b59b6",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
