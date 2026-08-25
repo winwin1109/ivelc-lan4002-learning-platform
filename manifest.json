@@ -1,7 +1,7 @@
 {
-  "name": "4002教師版",
-  "short_name": "4002教師版",
-  "description": "職業中文傳意—電子教學平台 (LAN4002)",
+  "name": "職業中文傳意—電子教學平台 (LAN4002)",
+  "short_name": "職中傳意",
+  "description": "LAN4002 職業中文傳意電子教學平台，提供普通話報告與推介文書的互動學習資源。",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f0f4f8",
