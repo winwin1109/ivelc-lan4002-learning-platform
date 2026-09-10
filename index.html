@@ -91,7 +91,7 @@
         .book-code-dark { font-size: 1.2rem; color: #2d3436; font-weight: bold; margin: 0; }
         .book-icons { display: flex; gap: 10px; margin-top: 8px; color: #636e72; font-size: 1rem; }
 
-        /* --- 2. 專業目錄設計 --- */
+        /* --- 2. 專業目錄設計 (已升級為按鍵) --- */
         .toc-container, .content-container {
             width: 100%; max-width: 950px; margin: 0 auto; background: white;
             padding: 50px; border-radius: var(--border-radius-lg);
@@ -252,11 +252,13 @@
             border: 2px solid #e4c1d9; background: #f8f9fa; min-height: 420px; 
         }
         
+        /* 預設濃縮全頁樣式 */
         .preview-iframe {
             position: absolute; top: -40px; left: 0; width: 350%; height: 500%;
             transform: scale(0.2857); transform-origin: top left; border: none; pointer-events: none;
         }
 
+        /* 專為指定預覽圖「放大並填滿」設計的樣式 (修復置中偏左問題) */
         .iframe-enlarge-fill {
             width: 140% !important; height: 250% !important; left: 0 !important;
             top: -100px !important; transform: scale(0.714) !important; transform-origin: top left !important;
@@ -299,7 +301,7 @@
         .modal-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         /* ==============================================================
-           完美手機版適配 (RWD 響應式設計)
+           完美手機版適配 (RWD 響應式設計)，不改變任何設計元素，僅調整縮放排版
            ============================================================== */
         @media (max-width: 850px) { 
             body { padding: 10px; }
@@ -332,10 +334,12 @@
             .lb-title { font-size: 1rem; }
             .lb-cover-img { height: 100px; margin-bottom: 10px; }
             
+            /* 手機版標籤分頁改為直列大按鍵，方便點擊 */
             .lesson-tabs { flex-direction: column; gap: 10px; margin-bottom: 15px; }
             .tab-btn { width: 100%; border-radius: 15px; padding: 12px 20px; }
             .tab-content-container { padding: 25px 15px; border-top: none; border-left: 6px solid #9b59b6; margin-top: 0; border-radius: 15px;}
             
+            /* 手機版互動模塊排版改為上下層疊，避免擁擠 */
             .resource-card { flex-direction: column; padding: 15px; gap: 20px; border-radius: 15px; }
             .preview-section { min-height: 300px; width: 100%; border-radius: 12px; }
             .action-section { width: 100%; flex-direction: column; padding: 20px; box-sizing: border-box; border-radius: 12px; }
@@ -345,72 +349,6 @@
             
             .modal-header { padding: 10px 15px; }
             .return-modal-btn { width: 100%; justify-content: center; font-size: 1rem; padding: 10px; }
-        }
-
-        /* ==============================================================
-           PWA 底部彈出安裝提示 (iOS & Android 適配)
-           ============================================================== */
-        .install-popup {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: #ffffff;
-            padding: 15px 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.3);
-            z-index: 10000;
-            display: none; 
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            border: 3px solid #fdf0f6;
-            box-sizing: border-box;
-        }
-        .install-popup.show {
-            display: flex;
-            animation: slideUpPopup 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes slideUpPopup {
-            from { opacity: 0; transform: translate(-50%, 50px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
-        }
-        .install-popup-text { flex: 1; }
-        .install-popup-text strong {
-            color: #2c3e50;
-            font-size: 1.1rem;
-            display: block;
-            margin-bottom: 3px;
-        }
-        .install-popup-text span {
-            color: #636e72;
-            font-size: 0.9rem;
-            line-height: 1.3;
-            display: block;
-        }
-        .install-action-btn {
-            background: var(--accent-4002-gradient);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
-            transition: 0.3s;
-            white-space: nowrap;
-        }
-        .install-action-btn:hover { transform: scale(1.05); }
-        .install-close-btn {
-            background: none;
-            border: none;
-            color: #b2bec3;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0;
-            line-height: 1;
         }
     </style>
 </head>
@@ -426,7 +364,10 @@
 
     <header>
         <h1>職業中文傳意—電子教學平台</h1>
-        <!-- 移除了原本的按鈕，改為使用底部的彈出視窗 -->
+        <!-- 新增這個安裝按鈕 -->
+        <button id="installAppBtn" style="display: none; margin: 15px auto 0; padding: 10px 20px; background: white; color: #9b59b6; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            <i class="fa-solid fa-download"></i> 下載安裝為電腦/手機 App
+        </button>
     </header>
 
     <main>
@@ -455,7 +396,7 @@
             <p style="text-align:center; color:#636e72; font-weight: bold;">👉 點擊書本展開目錄</p>
         </section>
 
-        <!-- 目錄與選單區塊 -->
+        <!-- 目錄與選單區塊 (已升級為互動按鍵版) -->
         <section id="toc-view" class="view-section">
             <div class="toc-container">
                 <button class="back-btn" onclick="showView('library-view')">⬅ 返回書櫃</button>
@@ -1187,7 +1128,27 @@
                             </div>
                         </div>
                         <div id="pane-4-5" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt4-teacher-part5/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt4-tq5.jpg" alt="QR Code 5">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt4-teacher-part5/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt4-teacher-part5/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt4-tq5.jpg" download="lt4-tq5.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1273,7 +1234,27 @@
                             </div>
                         </div>
                         <div id="pane-5-3" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt5-teacher-part3/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt5-tq3.jpg" alt="QR Code 3">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt5-teacher-part3/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt5-teacher-part3/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt5-tq3.jpg" download="lt5-tq3.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1645,16 +1626,6 @@
         </div>
     </div>
 
-    <!-- PWA 安裝彈出視窗 -->
-    <div id="pwa-install-popup" class="install-popup">
-        <div class="install-popup-text">
-            <strong>安裝電子教學平台 📲</strong>
-            <span id="pwa-install-msg">點擊安裝 App，隨時隨地離線學習！</span>
-        </div>
-        <button id="pwa-install-btn" class="install-action-btn">下載 App</button>
-        <button class="install-close-btn" onclick="document.getElementById('pwa-install-popup').classList.remove('show')">×</button>
-    </div>
-
     <script>
         function showView(viewId) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
@@ -1707,66 +1678,41 @@
         }
 
         // ==========================================
-        // PWA 手機/電腦端 自動彈出安裝提示邏輯
+        // PWA 手動安裝按鈕邏輯
         // ==========================================
         let deferredPrompt;
-        const installPopup = document.getElementById('pwa-install-popup');
-        const pwaInstallBtn = document.getElementById('pwa-install-btn');
-        const pwaInstallMsg = document.getElementById('pwa-install-msg');
+        const installBtn = document.getElementById('installAppBtn');
 
-        // 判斷是否為 iOS 設備 (iPhone/iPad)
-        const isIos = () => {
-            const userAgent = window.navigator.userAgent.toLowerCase();
-            return /iphone|ipad|ipod/.test(userAgent);
-        };
+        // 監聽瀏覽器是否準備好觸發安裝
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // 防止瀏覽器預設的迷你提示列出現 (特別是手機端)
+            e.preventDefault();
+            // 儲存事件，以便稍後觸發
+            deferredPrompt = e;
+            // 顯示我們自訂的安裝按鈕
+            installBtn.style.display = 'block';
+        });
 
-        // 判斷是否已經安裝（已經處於全螢幕 App 模式）
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-        if (!isStandalone) {
-            if (isIos()) {
-                // iOS 系統：因為不支援按鈕直接安裝，改為顯示操作指示
-                pwaInstallMsg.innerHTML = '請點擊下方「分享」<i class="fa-solid fa-arrow-up-from-bracket" style="color:#3498db"></i><br>選擇「加入主畫面 ➕」';
-                pwaInstallBtn.style.display = 'none'; // 隱藏無效的下載按鈕
-                
-                // 延遲 2 秒後自動彈出，吸引注意力
-                setTimeout(() => {
-                    installPopup.classList.add('show');
-                }, 2000);
-
-            } else {
-                // Android / Windows 系統：攔截原生安裝事件
-                window.addEventListener('beforeinstallprompt', (e) => {
-                    // 防止瀏覽器預設的迷你提示列出現
-                    e.preventDefault();
-                    deferredPrompt = e;
-                    
-                    // 延遲 1.5 秒後自動彈出我們自訂的漂亮視窗
-                    setTimeout(() => {
-                        installPopup.classList.add('show');
-                    }, 1500);
-                });
-            }
-        }
-
-        // 當使用者點擊「下載 App」按鈕時 (僅限 Android/PC)
-        pwaInstallBtn.addEventListener('click', async () => {
+        // 當使用者點擊按鈕時
+        installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
-                // 顯示系統原生的安裝提示視窗
+                // 顯示安裝提示視窗
                 deferredPrompt.prompt();
                 // 等待使用者回應 (接受或拒絕)
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
                     console.log('使用者同意安裝 APP');
-                    installPopup.classList.remove('show'); // 隱藏彈出視窗
+                    // 安裝後隱藏按鈕
+                    installBtn.style.display = 'none';
                 }
+                // 清除 prompt，因為它只能被呼叫一次
                 deferredPrompt = null;
             }
         });
 
-        // 監聽是否已經成功安裝，安裝完成後自動隱藏視窗
+        // 監聽是否已經成功安裝，安裝完成後隱藏按鈕
         window.addEventListener('appinstalled', () => {
-            installPopup.classList.remove('show');
+            installBtn.style.display = 'none';
             console.log('APP 已成功安裝');
         });
     </script>
