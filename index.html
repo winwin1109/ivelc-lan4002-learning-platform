@@ -1261,7 +1261,7 @@
             </div>
         </section>
 
-        <!-- 第六課 -->
+        <!-- 第六課 (更新：修改了標籤 4，並新增了標籤 5) -->
         <section id="lesson-detail-view-6" class="view-section">
             <div class="content-container">
                 <button class="back-btn" onclick="showView('lessons-view-writing')">⬅ 返回寫作單元課程列表</button>
@@ -1290,7 +1290,8 @@
                         <button class="tab-btn active" onclick="switchLessonTab('pane-6-1', this)">1. 強化練習</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-6-2', this)">2. 評核錦囊</button>
                         <button class="tab-btn" onclick="switchLessonTab('pane-6-3', this)">3. 常用詞匯表</button>
-                        <button class="tab-btn" onclick="switchLessonTab('pane-6-4', this)">4. 特訓區</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-6-4', this)">4. 特訓區一</button>
+                        <button class="tab-btn" onclick="switchLessonTab('pane-6-5', this)">5. 特訓區二</button>
                     </div>
                     <div class="tab-content-container">
                         <div id="pane-6-1" class="tab-pane active">
@@ -1362,8 +1363,55 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- 更新的 4. 特訓區一 -->
                         <div id="pane-6-4" class="tab-pane">
-                            <h2 style="color: #9070a1; text-align: center; margin-top: 20px;">互動課本製作中......</h2>
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt6-teacher-part4A/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt6-tq4.jpg" alt="QR Code 4">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt6-teacher-part4A/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt6-teacher-part4A/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt6-tq4.jpg" download="lt6-tq4.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 新增的 5. 特訓區二 -->
+                        <div id="pane-6-5" class="tab-pane">
+                            <div class="resource-card">
+                                <div class="preview-section">
+                                    <iframe class="preview-iframe" src="https://winwin1109.github.io/4002-lt6-teacher-part5/" scrolling="no"></iframe>
+                                </div>
+                                <div class="action-section">
+                                    <div class="qr-box">
+                                        <img src="lt6-tq5.jpg" alt="QR Code 5">
+                                    </div>
+                                    <button class="enter-btn-large" onclick="openInteractiveModal('https://winwin1109.github.io/4002-lt6-teacher-part5/')">
+                                        <i class="fa-solid fa-door-open"></i> 進入互動課本
+                                    </button>
+                                    <div class="small-actions">
+                                        <button class="small-btn" onclick="navigator.clipboard.writeText('https://winwin1109.github.io/4002-lt6-teacher-part5/'); alert('已成功複製連結！');">
+                                            <i class="fa-solid fa-link"></i> 複製連結
+                                        </button>
+                                        <a href="lt6-tq5.jpg" download="lt6-tq5.jpg" class="small-btn">
+                                            <i class="fa-solid fa-download"></i> 下載QR
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
